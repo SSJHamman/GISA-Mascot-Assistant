@@ -11,29 +11,29 @@ function addTask() {
     taskDiv.classList.add("task");
     taskDiv.innerHTML = `
         <span>${taskText}</span>
-        <button onclick="completeTask(this)">Done</button>
+        <button onclick="completeTask(this)">✅</button>
     `;
     tasksContainer.appendChild(taskDiv);
     newTaskInput.value = "";
 
-    mascotMessage.innerText = "Nice! Task added! ✅";
+    mascotMessage.innerText = "Nice! Task added! 🎉";
 }
 
 function completeTask(button) {
     const taskDiv = button.parentElement;
     taskDiv.classList.toggle("done");
     mascotMessage.innerText = taskDiv.classList.contains("done")
-        ? "Great job completing a task! 🎉"
+        ? "Great job completing a task! 🚀"
         : "Task marked as incomplete.";
 }
 
 // STEM Tips
 const tips = [
-    "Did you know? Water has a high heat capacity!",
-    "Try using loops to simplify your code!",
-    "Physics tip: Acceleration = Change in Velocity / Time",
-    "Coding tip: Break problems into smaller steps.",
-    "Math tip: The Fibonacci sequence appears everywhere in nature."
+    "💧 Water has a high heat capacity!",
+    "🔁 Use loops to simplify your code.",
+    "⚡ Acceleration = Change in Velocity / Time",
+    "💻 Break coding problems into smaller steps.",
+    "📐 The Fibonacci sequence appears everywhere in nature!"
 ];
 
 const stemTipDiv = document.getElementById("stem-tip");
