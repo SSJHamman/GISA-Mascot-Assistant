@@ -1,46 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GISA STEM Assistant</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GISA STEM Assistant</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <img src="mascot.png" alt="Mascot" class="logo">
-        <h1>GISA Mascot STEM Assistant</h1>
-    </header>
+  <!-- Top navigation -->
+  <nav>
+    <img src="mascot.png" alt="Mascot Logo" class="nav-logo">
+    <h1>Global Impact STEM Academy</h1>
+    <ul class="nav-links">
+      <li><a href="#dashboard">Dashboard</a></li>
+      <li><a href="#tools-section">Tools</a></li>
+      <li><a href="#mascot-section">Mascot</a></li>
+    </ul>
+  </nav>
 
-    <main>
-        <!-- Tasks Panel -->
-        <section id="tasks-section" class="panel">
-            <h2>My Tasks</h2>
-            <div id="tasks-container"></div>
-            <div class="task-input">
-                <input type="text" id="new-task-input" placeholder="Add a new task...">
-                <button onclick="addTask()">➕ Add Task</button>
-            </div>
-        </section>
+  <main>
+    <!-- Dashboard / Tasks Panel -->
+    <section id="dashboard" class="panel">
+      <h2>Task Dashboard</h2>
+      <div id="tasks-container" class="dashboard-box"></div>
+      <div class="task-input">
+        <input type="text" id="new-task-input" placeholder="Enter new task">
+        <button class="btn-primary" onclick="addTask()">Add Task</button>
+      </div>
+      <div class="progress-container">
+        <div id="progress-bar"></div>
+      </div>
+    </section>
 
-        <!-- STEM Tips Panel -->
-        <section id="tools-section" class="panel">
-            <h2>STEM Tips</h2>
-            <div id="stem-tip" class="tip-box"></div>
-            <button class="tip-btn" onclick="showRandomTip()">💡 Show Tip</button>
-        </section>
+    <!-- Tools Panel -->
+    <section id="tools-section" class="panel">
+      <h2>STEM Tools</h2>
+      <div class="tool-box">
+        <h3>STEM Tip</h3>
+        <div id="stem-tip" class="tip-box"></div>
+        <button class="btn-secondary" onclick="showRandomTip()">Show Tip</button>
+      </div>
+      <div class="tool-box">
+        <h3>Mini Calculator</h3>
+        <input type="text" id="calc-input" placeholder="Enter expression">
+        <button class="btn-secondary" onclick="calculate()">Calculate</button>
+        <div id="calc-output" class="tip-box">Result: </div>
+      </div>
+    </section>
 
-        <!-- Mascot Panel -->
-        <section id="mascot-section" class="panel">
-            <h2>Mascot</h2>
-            <div id="mascot-message">Hello! Let's get STEMing! 🚀</div>
-        </section>
-    </main>
+    <!-- Mascot Panel -->
+    <section id="mascot-section" class="panel">
+      <h2>Mascot Assistant</h2>
+      <div id="mascot-message">Hello! Welcome to your STEM Assistant.</div>
+      <button class="btn-primary" onclick="mascotMessageRandom()">Surprise Message</button>
+    </section>
+  </main>
 
-    <footer>
-        &copy; 2025 GISA STEM Academy
-    </footer>
+  <footer>
+    &copy; 2025 Global Impact STEM Academy
+  </footer>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
