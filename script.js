@@ -1,22 +1,35 @@
+const mascot=document.getElementById("mascot");
+const mascotBubble=document.getElementById("mascot-bubble");
+const mascotMessage=document.getElementById("mascot-message");
+
 // Tasks
 const tasksContainer=document.getElementById("tasks-container");
 const newTaskInput=document.getElementById("new-task-input");
 const progressBar=document.getElementById("progress-bar");
-const mascotMessage=document.getElementById("mascot-message");
 let tasks=[];
 
+mascot.addEventListener("click",()=>{
+    mascotBubble.innerText="Hello STEM Explorer! 🌟";
+    mascotBubble.style.display="block";
+    mascot.style.transform="scale(1.2)";
+    setTimeout(()=>{
+        mascotBubble.style.display="none";
+        mascot.style.transform="scale(1)";
+    },3000);
+});
+
+// Tasks functions
 function addTask(){
     const text=newTaskInput.value.trim();
     if(!text) return;
     tasks.push({text,done:false});
     renderTasks();
     newTaskInput.value="";
-    mascotMessage.innerText="Task Added! ✅";
+    mascotBubble.innerText="Task Added! ✅";
+    mascotBubble.style.display="block";
+    setTimeout(()=>{mascotBubble.style.display="none"},2000);
 }
-function toggleTask(index){
-    tasks[index].done=!tasks[index].done;
-    renderTasks();
-}
+function toggleTask(index){ tasks[index].done=!tasks[index].done; renderTasks(); }
 function renderTasks(){
     tasksContainer.innerHTML="";
     tasks.forEach((task,i)=>{
@@ -42,21 +55,24 @@ const tips=[
 "Break coding problems into smaller steps",
 "Fibonacci sequence appears everywhere"
 ];
+const stemTip=document.getElementById("stem-tip");
 function showRandomTip(){
     const tip=tips[Math.floor(Math.random()*tips.length)];
     stemTip.innerText=tip;
-    mascotMessage.innerText="Here's a STEM Tip!";
+    mascotBubble.innerText="Here's a STEM Tip!";
+    mascotBubble.style.display="block";
+    setTimeout(()=>{mascotBubble.style.display="none"},2000);
 }
 
-// Mascot surprise
-const mascotMessages=[
+// Mascot messages
+const messages=[
 "Keep up the great work!","You are a STEM superstar!","Remember to take breaks!","Learning is fun!"
 ];
 function mascotMessageRandom(){
-    mascotMessage.innerText=mascotMessages[Math.floor(Math.random()*mascotMessages.length)];
+    mascotMessage.innerText=messages[Math.floor(Math.random()*messages.length)];
 }
 
-// Mini calculator
+// Calculator
 function calculate(){
     const input=document.getElementById("calc-input").value;
     const output=document.getElementById("calc-output");
