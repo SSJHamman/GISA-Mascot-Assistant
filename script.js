@@ -1,60 +1,66 @@
+const mascot=document.getElementById("mascot");
+const mascotBubble=document.getElementById("mascot-bubble");
+const tasksContainer=document.getElementById("tasks-container");
+const newTaskInput=document.getElementById("new-task-input");
+const stemTipDiv=document.getElementById("stem-tip");
+const calcInput=document.getElementById("calc-input");
+const calcOutput=document.getElementById("calc-output");
+
+let tasks=[];
+
+// Mascot hover
+mascot.addEventListener("click",()=>{
+    mascotBubble.style.display="block";
+    setTimeout(()=>{mascotBubble.style.display="none";},3000);
+    mascot.style.transform="scale(1.2)";
+    setTimeout(()=>{mascot.style.transform="scale(1)";},300);
+});
+
 // Tasks
-const tasksContainer = document.getElementById("tasks-container");
-const newTaskInput = document.getElementById("new-task-input");
-const mascotMessage = document.getElementById("mascot-message");
-const progressBar = document.getElementById("progress-bar");
-
-let tasks = [];
-
 function addTask(){
-    const taskText = newTaskInput.value.trim();
-    if(!taskText) return;
-    tasks.push({text:taskText, done:false});
+    const text=newTaskInput.value.trim();
+    if(!text) return;
+    tasks.push({text,done:false});
     renderTasks();
-    newTaskInput.value = "";
-    mascotMessage.innerText="Task added successfully!";
+    newTaskInput.value="";
+    mascotBubble.innerText="Task Added! ✅";
+    mascotBubble.style.display="block";
+    setTimeout(()=>{mascotBubble.style.display="none"},2000);
 }
-
-function completeTask(index){
-    tasks[index].done = !tasks[index].done;
+function toggleTask(index){
+    tasks[index].done=!tasks[index].done;
     renderTasks();
-    mascotMessage.innerText = tasks[index].done ? "Task completed! Great job!" : "Task marked incomplete.";
 }
-
 function renderTasks(){
-    tasksContainer.innerHTML = "";
+    tasksContainer.innerHTML="";
     tasks.forEach((task,i)=>{
-        const div = document.createElement("div");
+        const div=document.createElement("div");
         div.className="task"+(task.done?" done":"");
-        div.innerHTML=`<span>${task.text}</span><button onclick="completeTask(${i})">✔</button>`;
+        div.innerHTML=`<span>${task.text}</span>`;
+        div.onclick=()=>toggleTask(i);
         tasksContainer.appendChild(div);
     });
-    updateProgress();
-}
-
-function updateProgress(){
-    const completed = tasks.filter(t=>t.done).length;
-    const percent = tasks.length?Math.round((completed/tasks.length)*100):0;
-    progressBar.style.width = percent+"%";
 }
 
 // STEM Tips
-const tips=["Water has a high heat capacity.","Use loops to simplify code.","Acceleration = ΔVelocity / ΔTime","Break coding problems into steps","Fibonacci appears everywhere!"];
-const stemTipDiv=document.getElementById("stem-tip");
+const tips=[
+"Water has a high heat capacity",
+"Use loops to simplify code",
+"Acceleration = ΔVelocity / ΔTime",
+"Break coding problems into smaller steps",
+"Fibonacci sequence appears everywhere"
+];
 function showRandomTip(){
-    stemTipDiv.innerText = tips[Math.floor(Math.random()*tips.length)];
-    mascotMessage.innerText = "Here's a STEM tip!";
+    const tip=tips[Math.floor(Math.random()*tips.length)];
+    stemTipDiv.innerText=tip;
+    mascotBubble.innerText="Here's a STEM Tip!";
+    mascotBubble.style.display="block";
+    setTimeout(()=>{mascotBubble.style.display="none"},2000);
 }
 
-// Mascot surprise messages
-const mascotMessages=["Keep up the great work!","You are a STEM superstar!","Remember to take breaks!","Learning is fun!"];
-function mascotMessageRandom(){
-    mascotMessage.innerText = mascotMessages[Math.floor(Math.random()*mascotMessages.length)];
-}
-
-// Mini calculator
+// Mini Calculator
 function calculate(){
-    const input=document.getElementById("calc-input").value;
-    let output=document.getElementById("calc-output");
-    try{output.innerText="Result: "+eval(input);}catch{output.innerText="Invalid expression";}
+    try{
+        calcOutput.innerText="Result: "+eval(calcInput.value);
+    }catch{calcOutput.innerText="Invalid Expression";}
 }
