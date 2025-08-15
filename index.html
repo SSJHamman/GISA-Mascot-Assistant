@@ -1,65 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GISA STEM Assistant</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GISA STEM Control Center</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Top navigation -->
-  <nav>
-    <img src="mascot.png" alt="Mascot Logo" class="nav-logo">
-    <h1>Global Impact STEM Academy</h1>
-    <ul class="nav-links">
-      <li><a href="#dashboard">Dashboard</a></li>
-      <li><a href="#tools-section">Tools</a></li>
-      <li><a href="#mascot-section">Mascot</a></li>
-    </ul>
-  </nav>
 
-  <main>
-    <!-- Dashboard / Tasks Panel -->
-    <section id="dashboard" class="panel">
-      <h2>Task Dashboard</h2>
-      <div id="tasks-container" class="dashboard-box"></div>
-      <div class="task-input">
-        <input type="text" id="new-task-input" placeholder="Enter new task">
-        <button class="btn-primary" onclick="addTask()">Add Task</button>
-      </div>
-      <div class="progress-container">
-        <div id="progress-bar"></div>
-      </div>
-    </section>
+<div id="mascot-container">
+    <img src="mascot.png" id="mascot" alt="Mascot">
+    <div id="mascot-bubble">Hello, STEM Explorer! 🚀</div>
+</div>
 
-    <!-- Tools Panel -->
-    <section id="tools-section" class="panel">
-      <h2>STEM Tools</h2>
-      <div class="tool-box">
-        <h3>STEM Tip</h3>
-        <div id="stem-tip" class="tip-box"></div>
-        <button class="btn-secondary" onclick="showRandomTip()">Show Tip</button>
-      </div>
-      <div class="tool-box">
-        <h3>Mini Calculator</h3>
-        <input type="text" id="calc-input" placeholder="Enter expression">
-        <button class="btn-secondary" onclick="calculate()">Calculate</button>
-        <div id="calc-output" class="tip-box">Result: </div>
-      </div>
-    </section>
+<div class="floating-card" id="task-card">
+    <h2>Tasks</h2>
+    <div id="tasks-container"></div>
+    <input type="text" id="new-task-input" placeholder="Add a new task">
+    <button class="btn" onclick="addTask()">Add Task</button>
+</div>
 
-    <!-- Mascot Panel -->
-    <section id="mascot-section" class="panel">
-      <h2>Mascot Assistant</h2>
-      <div id="mascot-message">Hello! Welcome to your STEM Assistant.</div>
-      <button class="btn-primary" onclick="mascotMessageRandom()">Surprise Message</button>
-    </section>
-  </main>
+<div class="floating-card" id="tip-card">
+    <h2>STEM Tips</h2>
+    <div id="stem-tip">Tip will appear here!</div>
+    <button class="btn" onclick="showRandomTip()">Show Tip</button>
+</div>
 
-  <footer>
-    &copy; 2025 Global Impact STEM Academy
-  </footer>
+<div class="floating-card" id="calc-card">
+    <h2>Mini Calculator</h2>
+    <input type="text" id="calc-input" placeholder="Enter expression">
+    <button class="btn" onclick="calculate()">Calculate</button>
+    <div id="calc-output">Result: </div>
+</div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
