@@ -1,6 +1,18 @@
+// Mascot
 const mascot=document.getElementById("mascot");
 const mascotBubble=document.getElementById("mascot-bubble");
-const mascotMessage=document.getElementById("mascot-message");
+
+mascot.addEventListener("click",()=>{
+    showMascotMessage("Hello STEM Explorer! 🌟");
+    mascot.style.transform="scale(1.2)";
+    setTimeout(()=>{mascot.style.transform="scale(1)";},300);
+});
+
+function showMascotMessage(text){
+    mascotBubble.innerText=text;
+    mascotBubble.style.display="block";
+    setTimeout(()=>{mascotBubble.style.display="none";},2500);
+}
 
 // Tasks
 const tasksContainer=document.getElementById("tasks-container");
@@ -8,26 +20,13 @@ const newTaskInput=document.getElementById("new-task-input");
 const progressBar=document.getElementById("progress-bar");
 let tasks=[];
 
-mascot.addEventListener("click",()=>{
-    mascotBubble.innerText="Hello STEM Explorer! 🌟";
-    mascotBubble.style.display="block";
-    mascot.style.transform="scale(1.2)";
-    setTimeout(()=>{
-        mascotBubble.style.display="none";
-        mascot.style.transform="scale(1)";
-    },3000);
-});
-
-// Tasks functions
 function addTask(){
     const text=newTaskInput.value.trim();
     if(!text) return;
     tasks.push({text,done:false});
     renderTasks();
     newTaskInput.value="";
-    mascotBubble.innerText="Task Added! ✅";
-    mascotBubble.style.display="block";
-    setTimeout(()=>{mascotBubble.style.display="none"},2000);
+    showMascotMessage("Task Added! ✅");
 }
 function toggleTask(index){ tasks[index].done=!tasks[index].done; renderTasks(); }
 function renderTasks(){
@@ -47,7 +46,7 @@ function updateProgress(){
     progressBar.style.width=percent+"%";
 }
 
-// STEM tips
+// STEM Tips
 const tips=[
 "Water has a high heat capacity",
 "Use loops to simplify code",
@@ -59,17 +58,7 @@ const stemTip=document.getElementById("stem-tip");
 function showRandomTip(){
     const tip=tips[Math.floor(Math.random()*tips.length)];
     stemTip.innerText=tip;
-    mascotBubble.innerText="Here's a STEM Tip!";
-    mascotBubble.style.display="block";
-    setTimeout(()=>{mascotBubble.style.display="none"},2000);
-}
-
-// Mascot messages
-const messages=[
-"Keep up the great work!","You are a STEM superstar!","Remember to take breaks!","Learning is fun!"
-];
-function mascotMessageRandom(){
-    mascotMessage.innerText=messages[Math.floor(Math.random()*messages.length)];
+    showMascotMessage("Here's a STEM Tip!");
 }
 
 // Calculator
