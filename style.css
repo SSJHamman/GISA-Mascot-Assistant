@@ -1,1 +1,121 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
+body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    background-color: #161b22;
+    padding: 1rem 2rem;
+    border-bottom: 2px solid #58a6ff;
+}
+
+header h1 {
+    margin-left: 1rem;
+    color: #58a6ff;
+}
+
+header .logo {
+    width: 60px;
+    height: 60px;
+}
+
+main {
+    display: flex;
+    justify-content: space-around;
+    flex: 1;
+    padding: 2rem;
+}
+
+section {
+    background-color: #21262d;
+    padding: 1.5rem;
+    border-radius: 10px;
+    width: 30%;
+    min-width: 250px;
+}
+
+section h2 {
+    margin-bottom: 1rem;
+    color: #58a6ff;
+    text-align: center;
+}
+
+#tasks-container {
+    margin-bottom: 1rem;
+}
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #161b22;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+}
+
+.task.done {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.task button {
+    background-color: #238636;
+    border: none;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#new-task-input {
+    width: 70%;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: none;
+}
+
+#stem-tip {
+    background-color: #161b22;
+    padding: 1rem;
+    border-radius: 10px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1rem;
+}
+
+#mascot-section {
+    text-align: center;
+}
+
+#mascot-message {
+    background-color: #0d1117;
+    border: 2px solid #58a6ff;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+    min-height: 60px;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #161b22;
+    border-top: 2px solid #58a6ff;
+}
