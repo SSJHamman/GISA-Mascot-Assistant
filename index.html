@@ -3,16 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GISA Mascot</title>
+<title>GISA STEM Dashboard</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div id="dashboard">
+    <!-- Panels -->
+    <div class="panel" id="tasks-panel">
+        <h2>Tasks</h2>
+        <button class="btn-primary" onclick="mascotMoveTo('tasks-panel')">Interact</button>
+    </div>
+
+    <div class="panel" id="tips-panel">
+        <h2>STEM Tips</h2>
+        <button class="btn-secondary" onclick="mascotMoveTo('tips-panel')">Interact</button>
+    </div>
+
+    <div class="panel" id="calc-panel">
+        <h2>Calculator</h2>
+        <button class="btn-secondary" onclick="mascotMoveTo('calc-panel')">Interact</button>
+    </div>
+
     <!-- Mascot Center -->
     <div id="mascot-area">
         <img src="mascot.png" id="mascot" alt="GISA Mascot">
-        <div id="mascot-bubble">Hello, STEM Explorer! 🚀</div>
+        <div id="mascot-bubble">Hello! Click a panel for me to visit! 🚀</div>
     </div>
 </div>
 
