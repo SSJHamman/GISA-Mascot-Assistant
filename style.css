@@ -67,7 +67,7 @@ body {
     transform: scale(1.05);
 }
 
-/* Tasks list */
+/* Tasks */
 #tasks-container .task {
     background: rgba(0,200,255,0.2);
     margin:5px 0;
