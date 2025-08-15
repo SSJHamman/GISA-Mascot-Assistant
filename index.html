@@ -3,61 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GISA STEM Portal</title>
+<title>GISA STEM Dashboard</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="mascot-area">
-    <img src="mascot.png" id="mascot" alt="GISA Mascot">
-    <div id="mascot-bubble">Hello! Ready to explore STEM? 🚀</div>
-</div>
+<div id="dashboard">
+    <!-- Mascot Center -->
+    <div id="mascot-area">
+        <img src="mascot.png" id="mascot" alt="GISA Mascot">
+        <div id="mascot-bubble">Hello, STEM Explorer! 🚀</div>
+    </div>
 
-<div id="main-layout">
-    <header>
-        <h1>GISA STEM Portal</h1>
-        <nav>
-            <ul>
-                <li><a href="#tasks-panel">Tasks</a></li>
-                <li><a href="#tools-panel">Tools</a></li>
-                <li><a href="#mascot-panel">Mascot</a></li>
-            </ul>
-        </nav>
-    </header>
+    <!-- Panels -->
+    <div class="panel" id="tasks-panel">
+        <h2>Tasks</h2>
+        <div id="tasks-container" class="tasks"></div>
+        <div class="task-input">
+            <input type="text" id="new-task-input" placeholder="Add a new task">
+            <button class="btn-primary" onclick="addTask()">Add Task</button>
+        </div>
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+    </div>
 
-    <div id="content">
-        <section id="tasks-panel" class="panel">
-            <h2>Task Dashboard</h2>
-            <div id="tasks-container" class="tasks"></div>
-            <div class="task-input">
-                <input type="text" id="new-task-input" placeholder="Add a new task">
-                <button class="btn-primary" onclick="addTask()">Add Task</button>
-            </div>
-            <div class="progress-container">
-                <div id="progress-bar"></div>
-            </div>
-        </section>
+    <div class="panel" id="tips-panel">
+        <h2>STEM Tips</h2>
+        <div id="stem-tip" class="tip-box">Click "Show Tip" for a random STEM tip!</div>
+        <button class="btn-secondary" onclick="showRandomTip()">Show Tip</button>
+    </div>
 
-        <section id="tools-panel" class="panel">
-            <h2>STEM Tools</h2>
-            <div class="tool-box">
-                <h3>STEM Tip</h3>
-                <div id="stem-tip" class="tip-box"></div>
-                <button class="btn-secondary" onclick="showRandomTip()">Show Tip</button>
-            </div>
-            <div class="tool-box">
-                <h3>Mini Calculator</h3>
-                <input type="text" id="calc-input" placeholder="Enter expression">
-                <button class="btn-secondary" onclick="calculate()">Calculate</button>
-                <div id="calc-output" class="tip-box">Result: </div>
-            </div>
-        </section>
-
-        <section id="mascot-panel" class="panel">
-            <h2>Mascot Assistant</h2>
-            <div id="mascot-message">Click me or the buttons for messages!</div>
-            <button class="btn-primary" onclick="mascotMessageRandom()">Surprise Message</button>
-        </section>
+    <div class="panel" id="calc-panel">
+        <h2>Calculator</h2>
+        <input type="text" id="calc-input" placeholder="Enter expression">
+        <button class="btn-secondary" onclick="calculate()">Calculate</button>
+        <div id="calc-output" class="tip-box">Result: </div>
     </div>
 </div>
 
