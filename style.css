@@ -1,83 +1,55 @@
-body {
-    margin:0; padding:0;
-    background: linear-gradient(135deg,#0f0f20,#1c1c2f);
-    font-family: 'Segoe UI', sans-serif;
-    overflow-x:hidden;
-}
+/* Reset & base */
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; }
+body { background:#f5f7fa; color:#1a1a1a; display:flex; flex-direction:column; min-height:100vh; }
 
-/* Mascot */
-#mascot-container {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    z-index: 100;
+/* Header */
+header {
+  display:flex; justify-content:space-between; align-items:center;
+  background: linear-gradient(90deg, #0078d7, #00c0ff);
+  padding:1rem 2rem; color:white;
 }
-#mascot {
-    width:120px;
-    transition: transform 0.3s;
-    cursor: pointer;
-}
-#mascot-bubble {
-    background: rgba(0,200,255,0.9);
-    color:#000;
-    padding:0.5rem 1rem;
-    border-radius:15px;
-    margin-bottom:10px;
-    text-align:center;
-    display:none;
-    font-weight:bold;
-}
+header .logo { width:60px; height:60px; }
+header h1 { margin-left:1rem; font-size:1.8rem; }
+header nav ul { display:flex; list-style:none; gap:1.5rem; }
+header nav ul li a { color:white; text-decoration:none; font-weight:bold; transition:0.3s; }
+header nav ul li a:hover { color:#ffe600; }
 
-/* Floating cards */
-.floating-card {
-    position:absolute;
-    background: rgba(20,20,30,0.95);
-    border:2px solid #00c8ff;
-    border-radius:20px;
-    padding:1rem;
-    width:250px;
-    box-shadow:0 0 20px #00c8ff;
-    color:#fff;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.floating-card:hover {
-    transform: scale(1.05);
-    box-shadow:0 0 30px #00ffff;
-}
+/* Main */
+main { display:flex; justify-content:space-around; flex-wrap:wrap; gap:2rem; padding:2rem; }
 
-#task-card { top:50px; left:50px;}
-#tip-card { top:50px; right:50px;}
-#calc-card { bottom:100px; right:100px;}
-
-/* Buttons */
-.btn {
-    background: #00c8ff;
-    color:#000;
-    font-weight:bold;
-    border:none;
-    padding:0.5rem 1rem;
-    border-radius:10px;
-    cursor:pointer;
-    margin-top:0.5rem;
-    width:100%;
-    transition: all 0.2s;
+/* Panels */
+.panel {
+  background:white; border-radius:15px; padding:2rem; width:350px; box-shadow:0 4px 20px rgba(0,0,0,0.2);
+  display:flex; flex-direction:column; align-items:center; transition:transform 0.2s;
 }
-.btn:hover {
-    background:#00ffff;
-    transform: scale(1.05);
-}
+.panel:hover { transform: translateY(-5px); box-shadow:0 6px 25px rgba(0,0,0,0.3);}
+.panel h2 { color:#0078d7; margin-bottom:1rem; text-align:center; }
 
 /* Tasks */
-#tasks-container .task {
-    background: rgba(0,200,255,0.2);
-    margin:5px 0;
-    padding:0.5rem;
-    border-radius:10px;
-    display:flex;
-    justify-content:space-between;
-    cursor:pointer;
-}
-#tasks-container .task.done {
-    text-decoration:line-through;
-    opacity:0.6;
-}
+.tasks { width:100%; margin-bottom:1rem; }
+.tasks .task { display:flex; justify-content:space-between; padding:0.6rem 1rem; border-radius:10px; background:#e5f1ff; margin-bottom:0.5rem; cursor:pointer; }
+.tasks .task.done { text-decoration:line-through; opacity:0.6; }
+.task-input { display:flex; gap:0.5rem; width:100%; margin-bottom:1rem; }
+#new-task-input { flex:1; padding:0.5rem 0.8rem; border-radius:8px; border:1px solid #0078d7; font-size:1rem; }
+.progress-container { width:100%; background:#e0e0e0; border-radius:10px; overflow:hidden; height:15px; }
+#progress-bar { width:0%; height:100%; background:#00c0ff; transition:width 0.3s; }
+
+/* STEM tips & calculator */
+.tool-box { width:100%; text-align:center; margin-bottom:1.5rem; }
+.tip-box { background:#f0f8ff; padding:1rem; border-radius:10px; margin-bottom:0.5rem; }
+
+/* Buttons */
+button { border:none; padding:0.6rem 1rem; border-radius:10px; font-weight:bold; cursor:pointer; transition:all 0.2s; }
+.btn-primary { background:#0078d7; color:white; width:100%; margin-top:0.5rem; }
+.btn-primary:hover { background:#005ea3; transform:scale(1.05);}
+.btn-secondary { background:#00c0ff; color:#000; width:100%; margin-top:0.5rem; }
+.btn-secondary:hover { background:#00a0e0; transform:scale(1.05); }
+
+/* Mascot panel */
+#mascot-message { background:#e0f7ff; padding:1rem; border-radius:12px; min-height:60px; width:100%; text-align:center; margin-bottom:0.5rem; }
+
+/* Footer */
+footer { text-align:center; padding:1rem; background:#0078d7; color:white; margin-top:auto; }
+
+/* Responsive */
+@media(max-width:1200px){ main{flex-direction:column; align-items:center;} }
