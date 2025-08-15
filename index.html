@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GISA STEM Dashboard</title>
+<title>GISA Mascot</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,38 +14,8 @@
         <img src="mascot.png" id="mascot" alt="GISA Mascot">
         <div id="mascot-bubble">Hello, STEM Explorer! 🚀</div>
     </div>
-
-    <!-- Panels -->
-    <div class="panel" id="tasks-panel">
-        <h2>Tasks</h2>
-        <div id="tasks-container" class="tasks"></div>
-        <div class="task-input">
-            <input type="text" id="new-task-input" placeholder="Add a new task">
-            <button class="btn-primary" onclick="addTask()">Add Task</button>
-        </div>
-        <div class="progress-container">
-            <div id="progress-bar"></div>
-        </div>
-    </div>
-
-    <div class="panel" id="tips-panel">
-        <h2>STEM Tips</h2>
-        <div id="stem-tip" class="tip-box">Click "Show Tip" for a random STEM tip!</div>
-        <button class="btn-secondary" onclick="showRandomTip()">Show Tip</button>
-    </div>
-
-    <div class="panel" id="calc-panel">
-        <h2>Calculator</h2>
-        <input type="text" id="calc-input" placeholder="Enter expression">
-        <button class="btn-secondary" onclick="calculate()">Calculate</button>
-        <div id="calc-output" class="tip-box">Result: </div>
-    </div>
 </div>
 
-<footer>
-    &copy; 2025 Global Impact STEM Academy
-</footer>
-
-<script src="script.js"></script>
+<script src="mascot.js"></script>
 </body>
 </html>
