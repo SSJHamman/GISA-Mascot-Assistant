@@ -3,46 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SYNTRAX</title>
+<title>SYNTRAX — Government Operations</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:'Roboto Mono', monospace;background:#0d1117;color:#c9d1d9;}
-  header{padding:10px 20px;background:#161b22;border-bottom:2px solid #21262d;display:flex;justify-content:space-between;align-items:center;}
-  .brand{font-weight:700;font-size:22px;color:#58a6ff;}
+  body{font-family:'Roboto Mono', monospace;background:#0b0c0e;color:#c9d1d9;}
+  header{padding:12px 24px;background:#131516;border-bottom:3px solid #1f2225;display:flex;justify-content:space-between;align-items:center;}
+  .brand{font-weight:700;font-size:24px;color:#58a6ff;letter-spacing:1px;}
   #clock{font-weight:400;font-size:16px;color:#8b949e;}
-  main{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:20px;}
-  .panel{background:#161b22;border:1px solid #21262d;border-radius:6px;padding:15px;min-height:200px;overflow:auto;}
-  .panel h3{font-size:14px;text-transform:uppercase;color:#8b949e;margin-bottom:8px;}
-  .log{font-family:'Roboto Mono', monospace;font-size:12px;line-height:1.3;max-height:200px;overflow-y:auto;color:#c9d1d9;}
-  .console{display:flex;margin:20px;padding:0 20px;}
-  #cmd{flex:1;padding:8px;border-radius:4px;border:1px solid #30363d;background:#0d1117;color:#c9d1d9;font-family:'Roboto Mono', monospace;}
+  main{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:24px;}
+  .panel{background:#131516;border:1px solid #1f2225;border-radius:6px;padding:16px;min-height:220px;overflow:auto;}
+  .panel h3{font-size:13px;text-transform:uppercase;color:#8b949e;margin-bottom:10px;letter-spacing:1px;}
+  .log{font-family:'Roboto Mono', monospace;font-size:12px;line-height:1.3;max-height:220px;overflow-y:auto;color:#c9d1d9;}
+  .console{display:flex;margin:24px;padding:0 24px;}
+  #cmd{flex:1;padding:8px;border-radius:4px;border:1px solid #30363d;background:#0b0c0e;color:#c9d1d9;font-family:'Roboto Mono', monospace;}
+  .panel .status{font-size:12px;margin-top:8px;color:#8b949e;}
 </style>
 </head>
 <body>
 <header>
-  <div class="brand">SYNTRAX GOV SYS</div>
+  <div class="brand">SYNTRAX OPERATIONS</div>
   <div id="clock"></div>
 </header>
 <main>
   <section class="panel">
-    <h3>Local Weather</h3>
+    <h3>Weather Control Node</h3>
     <canvas id="weatherChart" height="120"></canvas>
-    <div id="weatherMeta">Loading...</div>
+    <div class="status" id="weatherMeta">--</div>
   </section>
   <section class="panel">
-    <h3>Seismic Activity</h3>
+    <h3>Seismic Monitoring Node</h3>
     <canvas id="quakeChart" height="120"></canvas>
-    <div id="quakeMeta">Loading...</div>
+    <div class="status" id="quakeMeta">--</div>
   </section>
   <section class="panel">
     <h3>Core Event Log</h3>
     <div class="log" id="log"></div>
   </section>
   <section class="panel">
-    <h3>Orbital Tracking</h3>
-    <div id="issBox">Loading...</div>
+    <h3>Orbital Surveillance Node</h3>
+    <div class="status" id="issBox">--</div>
   </section>
 </main>
 <div class="console">
@@ -57,11 +58,53 @@ const state={weather:null,quakes:[],iss:null};
 function ts(){return new Date().toLocaleTimeString();}
 function appendLog(msg){const d=document.createElement('div');d.textContent=`[${ts()}] ${msg}`;logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;}
 setInterval(()=>clock.textContent=new Date().toLocaleTimeString(),1000);
-async function fetchWeather(){try{const res=await fetch('https://api.open-meteo.com/v1/forecast?latitude=39.924&longitude=-83.808&hourly=temperature_2m');const data=await res.json();state.weather=data.hourly.temperature_2m.slice(0,12);new Chart($('#weatherChart'),{type:'line',data:{labels:[...Array(12).keys()],datasets:[{label:'°C',data:state.weather}]}});$('#weatherMeta').textContent=`Sample temp: ${state.weather[0]}°C`;appendLog('Weather loaded');}catch(e){appendLog('Weather fetch failed');}}
-async function fetchQuakes(){try{const res=await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson');const data=await res.json();state.quakes=data.features.slice(0,5).map(f=>`M${f.properties.mag} @ ${f.properties.place}`);new Chart($('#quakeChart'),{type:'bar',data:{labels:state.quakes.map((_,i)=>i+1),datasets:[{label:'Magnitude',data:data.features.slice(0,5).map(f=>f.properties.mag)}]}});$('#quakeMeta').textContent=state.quakes.join('; ');appendLog('Quakes loaded');}catch(e){appendLog('Quake fetch failed');}}
-async function fetchISS(){try{const res=await fetch('https://api.wheretheiss.at/v1/satellites/25544');const data=await res.json();state.iss=data;$('#issBox').textContent=`Lat:${data.latitude.toFixed(2)} Lon:${data.longitude.toFixed(2)}`;appendLog('ISS data updated');}catch(e){appendLog('ISS fetch failed');}}
-$('#cmd').addEventListener('keydown',e=>{if(e.key==='Enter'){const val=e.target.value;appendLog('CMD>'+val);e.target.value='';}});
-fetchWeather();fetchQuakes();fetchISS();setInterval(fetchISS,15000);
+
+async function fetchWeather(){
+  try{
+    const res=await fetch('https://api.open-meteo.com/v1/forecast?latitude=39.924&longitude=-83.808&hourly=temperature_2m');
+    const data=await res.json();
+    state.weather=data.hourly.temperature_2m.slice(0,12);
+    new Chart($('#weatherChart'),{type:'line',data:{labels:[...Array(12).keys()],datasets:[{label:'°C',data:state.weather}]}});
+    $('#weatherMeta').textContent=`Node active. Current: ${state.weather[0]}°C`;
+    appendLog('Weather node operational');
+  }catch(e){appendLog('Weather node error');}
+  setTimeout(fetchWeather,60000);
+}
+
+async function fetchQuakes(){
+  try{
+    const res=await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson');
+    const data=await res.json();
+    state.quakes=data.features.slice(0,5).map(f=>`M${f.properties.mag} @ ${f.properties.place}`);
+    new Chart($('#quakeChart'),{type:'bar',data:{labels:state.quakes.map((_,i)=>i+1),datasets:[{label:'Magnitude',data:data.features.slice(0,5).map(f=>f.properties.mag)}]}});
+    $('#quakeMeta').textContent=state.quakes.join('; ');
+    appendLog('Seismic node operational');
+  }catch(e){appendLog('Seismic node error');}
+  setTimeout(fetchQuakes,60000);
+}
+
+async function fetchISS(){
+  try{
+    const res=await fetch('https://api.wheretheiss.at/v1/satellites/25544');
+    const data=await res.json();
+    state.iss=data;
+    $('#issBox').textContent=`Lat:${data.latitude.toFixed(2)} Lon:${data.longitude.toFixed(2)}`;
+    appendLog('Orbital node updated');
+  }catch(e){appendLog('Orbital node error');}
+  setTimeout(fetchISS,15000);
+}
+
+$('#cmd').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    const val=e.target.value;
+    appendLog('CMD>'+val);
+    e.target.value='';
+  }
+});
+
+fetchWeather();
+fetchQuakes();
+fetchISS();
 })();
 </script>
 </body>
