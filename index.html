@@ -3,393 +3,102 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SYNTRA</title>
+  <title>SYNTRAX</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
   <style>
-    :root{
-      --bg:#0a0f14; --panel:#0d141c; --ink:#c8e1ff; --dim:#7aa2c2; --accent:#43ffd2; --warn:#ff5470; --ok:#5eff7e;
-      --grid:rgba(67,255,210,0.08); --glow:0 0 24px rgba(67,255,210,0.25);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;}
-    body{margin:0;background:radial-gradient(1200px 600px at 70% -10%,rgba(67,255,210,0.06),transparent),var(--bg);color:var(--ink);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
-    .frame{display:grid;grid-template-rows:auto 1fr auto;min-height:100vh;}
-
-    /* Header */
-    header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--grid);background:linear-gradient(180deg,rgba(67,255,210,0.06),transparent);}    
-    .brand{display:flex;align-items:center;gap:14px}
-    .mark{font-family:Orbitron,system-ui;letter-spacing:6px;font-weight:900;font-size:28px;position:relative}
-    .mark::after{content:"";position:absolute;inset:-6px -10px;border:1px solid rgba(67,255,210,0.25);border-radius:8px;box-shadow:var(--glow);}    
-    .tag{font-size:12px;color:var(--dim);letter-spacing:2px;text-transform:uppercase}
-    .meta{display:flex;gap:16px;font-size:12px;color:var(--dim)}
-    .status-dot{width:10px;height:10px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok);display:inline-block;margin-right:6px}
-
-    /* Grid */
-    main{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px;padding:12px}
-    .panel{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent),var(--panel);border:1px solid var(--grid);border-radius:12px;position:relative;overflow:hidden}
-    .panel h3{margin:0;padding:10px 12px;border-bottom:1px solid var(--grid);font-family:Orbitron,system-ui;letter-spacing:2px;color:#b6f6e8;font-size:12px;text-transform:uppercase;}
-    .panel .body{padding:12px;height:340px;overflow:auto}
-    .panel.tall .body{height:720px}
-
-    /* Globe */
-    #globe{width:100%;height:680px;display:block}
-
-    /* Logs */
-    .log{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-size:12px;line-height:1.35}
-    .log .row{display:flex;gap:8px;padding:3px 0;border-bottom:1px dashed rgba(122,162,194,0.14)}
-    .log .ts{color:#6fb7ff}
-    .log .src{color:#7affbf}
-    .log .msg{color:#c8e1ff}
-    .log .warn{color:var(--warn)}
-
-    /* Console */
-    .console{display:flex;align-items:center;gap:10px;padding:12px;border-top:1px solid var(--grid);background:#081018}
-    .prompt{color:#7affbf;font-family:ui-monospace}
-    #cmd{flex:1;background:transparent;border:none;outline:none;color:var(--ink);font-family:ui-monospace;font-size:14px}
-
-    /* Glitch effect for SYNTRA */
-    .glitch{position:relative;display:inline-block}
-    .glitch:before,.glitch:after{content:attr(data-text);position:absolute;left:0;top:0;opacity:0.7;clip-path:inset(0 0 0 0)}
-    .glitch:before{transform:translate(1px,0);color:#00ffd0;animation:gl1 2.5s infinite}
-    .glitch:after{transform:translate(-1px,0);color:#9bf6ff;animation:gl2 2.8s infinite}
-    @keyframes gl1{0%{clip-path:inset(0 0 88% 0)}35%{clip-path:inset(0 0 0 0)}50%{clip-path:inset(60% 0 0 0)}100%{clip-path:inset(0 0 88% 0)}}
-    @keyframes gl2{0%{clip-path:inset(80% 0 0 0)}30%{clip-path:inset(0 0 0 0)}55%{clip-path:inset(0 0 72% 0)}100%{clip-path:inset(80% 0 0 0)}}
-
-    /* Boot overlay */
-    .boot{position:fixed;inset:0;background:#05080d;display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:8px}
-    .boot p{font-family:ui-monospace;color:#a9d9ff;margin:0}
-    .bar{width:360px;height:6px;border:1px solid #1a2a3c;border-radius:10px;overflow:hidden}
-    .fill{height:100%;width:0;background:linear-gradient(90deg,#00ffd0,#b6f6e8)}
-    .note{color:#6d93aa;font-size:12px;margin-top:6px}
-
-    /* Tiny helper badges */
-    .badge{position:absolute;right:10px;top:8px;font-size:11px;color:#99c7ff;opacity:0.7}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family:Inter,system-ui,sans-serif;background:#f5f5f5;color:#111}
+    header,main,footer{padding:12px;max-width:1200px;margin:auto}
+    header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ccc}
+    .brand{font-weight:600;font-size:20px}
+    main{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+    .panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;overflow:auto;min-height:200px}
+    .panel h3{font-size:14px;color:#555;margin-bottom:8px}
+    .log{font-family:monospace;font-size:12px;line-height:1.3;max-height:200px;overflow-y:auto}
+    .console{display:flex;margin-top:12px}
+    #cmd{flex:1;padding:6px;border:1px solid #ccc;border-radius:4px;font-family:monospace}
   </style>
 </head>
 <body>
-  <div class="boot" id="boot">
-    <p>\u25B6 INIT // SYNTRA v0.94a-Ω</p>
-    <div class="bar"><div class="fill" id="bootFill"></div></div>
-    <p class="note" id="bootNote">calibrating nodes...</p>
-  </div>
-
-  <div class="frame" style="visibility:hidden" id="frame">
-    <header>
-      <div class="brand">
-        <div class="mark glitch" data-text="SYNTRA">SYNTRA</div>
-        <div class="tag">STRATEGIC NEURAL ANALYSIS // LAYERED INTELLIGENCE</div>
-      </div>
-      <div class="meta">
-        <div><span class="status-dot"></span> CORE ONLINE</div>
-        <div>Build: 0xA4F9-23</div>
-        <div id="clock"></div>
-      </div>
-    </header>
-
-    <main>
-      <!-- Globe & System Map -->
-      <section class="panel tall">
-        <h3>System Map // Geospatial Node Lattice<span class="badge" id="geoBadge">0 nodes</span></h3>
-        <div class="body" style="padding:0">
-          <canvas id="globe"></canvas>
-        </div>
-      </section>
-
-      <!-- Graphs -->
-      <section class="panel">
-        <h3>Atmospheric Telemetry // Local Vector</h3>
-        <div class="body">
-          <canvas id="weatherChart" height="160"></canvas>
-          <div style="margin-top:8px;font-size:12px;color:var(--dim)" id="weatherMeta">Awaiting geolocation...</div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <h3>Seismic Activity // Last 24h</h3>
-        <div class="body">
-          <canvas id="quakeChart" height="160"></canvas>
-          <div style="margin-top:8px;font-size:12px;color:var(--dim)" id="quakeMeta">Loading USGS feed...</div>
-        </div>
-      </section>
-
-      <!-- Logs (right column top) -->
-      <section class="panel">
-        <h3>Core Event Log // Classified</h3>
-        <div class="body log" id="log"></div>
-      </section>
-
-      <!-- ISS & Space Weather (right column bottom) -->
-      <section class="panel">
-        <h3>Orbital Tracking // LEO Object 25544</h3>
-        <div class="body" id="issBox" style="font-family:ui-monospace;font-size:12px;line-height:1.5;color:#c8e1ff">
-          Fetching ISS ephemeris...
-        </div>
-      </section>
-    </main>
-
-    <div class="console">
-      <div class="prompt">SYNTRA$</div>
-      <input id="cmd" autocomplete="off" spellcheck="false" placeholder="type 'help' or try: status nodes | iss | analyze local | anomaly scan"/>
-    </div>
-  </div>
-
+<header>
+  <div class="brand">SYNTRAX</div>
+  <div id="clock"></div>
+</header>
+<main>
+  <section class="panel">
+    <h3>Local Weather</h3>
+    <canvas id="weatherChart" height="120"></canvas>
+    <div id="weatherMeta">Loading...</div>
+  </section>
+  <section class="panel">
+    <h3>Seismic Activity</h3>
+    <canvas id="quakeChart" height="120"></canvas>
+    <div id="quakeMeta">Loading...</div>
+  </section>
+  <section class="panel">
+    <h3>Core Event Log</h3>
+    <div class="log" id="log"></div>
+  </section>
+  <section class="panel">
+    <h3>Orbital Tracking</h3>
+    <div id="issBox">Loading...</div>
+  </section>
+</main>
+<div class="console">
+  <input id="cmd" autocomplete="off" spellcheck="false" placeholder="type command" />
+</div>
 <script>
 (() => {
-  /* ===== Utilities ===== */
-  const $ = sel => document.querySelector(sel);
+  const $ = s => document.querySelector(s);
   const logEl = $('#log');
-  const geoBadge = $('#geoBadge');
-  const issBox = $('#issBox');
   const clock = $('#clock');
-  const state = {
-    coords: { lat: 39.924, lon: -83.808 }, // fallback: Springfield, OH (near GISA)
-    weather: null,
-    weatherHourly: null,
-    quakes: [],
-    iss: null,
-    nodes: new Map(),
-    charts: { weather: null, quake: null },
-    globe: { scene:null, renderer:null, camera:null, points:null }
-  };
+  const state = { weather:null, quakes:[], iss:null };
 
-  function nowISO(){ return new Date().toISOString(); }
   function ts(){ return new Date().toLocaleTimeString(); }
-  function appendLog(src, msg, isWarn=false){
-    const row = document.createElement('div');
-    row.className = 'row';
-    row.innerHTML = `<span class="ts">${ts()}</span><span class="src">[${src}]</span><span class="msg ${isWarn?'warn':''}">${msg}</span>`;
-    logEl.appendChild(row);
-    logEl.scrollTop = logEl.scrollHeight;
-  }
+  function appendLog(msg){ const d = document.createElement('div'); d.textContent=`[${ts()}] ${msg}`; logEl.appendChild(d); logEl.scrollTop = logEl.scrollHeight; }
 
-  /* ===== Boot animation ===== */
-  const boot = $('#boot');
-  const bootFill = $('#bootFill');
-  const bootNote = $('#bootNote');
-  const frame = $('#frame');
-  const bootSteps = [
-    'synchronizing lattice...',
-    'hashing entropy pool...',
-    'calibrating nodes...',
-    'vector solvers engaged...',
-    'decrypting cache...',
-    'stabilizing core...'
-  ];
-  let bi=0, prog=0;
-  const bInt = setInterval(()=>{
-    prog += Math.random()*14; if(prog>100) prog=100;
-    bootFill.style.width = prog+'%';
-    bootNote.textContent = bootSteps[bi%bootSteps.length];
-    bi++;
-    if(prog>=100){ clearInterval(bInt); setTimeout(()=>{ boot.style.display='none'; frame.style.visibility='visible'; init(); },350); }
-  }, 280);
+  setInterval(()=>clock.textContent=new Date().toLocaleTimeString(),1000);
 
-  /* ===== Clock ===== */
-  setInterval(()=>{ clock.textContent = new Date().toUTCString(); }, 1000);
-
-  /* ===== Globe (Three.js) ===== */
-  function initGlobe(){
-    const canvas = document.getElementById('globe');
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
-    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-    const geo = new THREE.SphereGeometry(3, 64, 64);
-    const mat = new THREE.MeshStandardMaterial({ color:0x0e1f2b, roughness:0.9, metalness:0.1, wireframe:false });
-    const earth = new THREE.Mesh(geo, mat); scene.add(earth);
-    const grid = new THREE.GridHelper(40, 40, 0x00ffd0, 0x003f36); grid.position.y=-6; scene.add(grid);
-    const light = new THREE.PointLight(0x00ffd0, 2, 50); light.position.set(10,10,10); scene.add(light);
-    camera.position.set(0,0,8);
-
-    // Points group for earthquakes
-    const points = new THREE.Group(); scene.add(points);
-
-    function render(){ earth.rotation.y += 0.0009; points.rotation.y += 0.0009; renderer.render(scene, camera); requestAnimationFrame(render); }
-    requestAnimationFrame(render);
-
-    // Resize
-    const ro = new ResizeObserver(()=>{ renderer.setSize(canvas.clientWidth, canvas.clientHeight); camera.aspect = canvas.clientWidth/canvas.clientHeight; camera.updateProjectionMatrix(); });
-    ro.observe(canvas);
-
-    state.globe = { scene, camera, renderer, points };
-  }
-
-  function latLonToVec3(lat, lon, radius=3){
-    const phi = (90 - lat) * (Math.PI/180);
-    const theta = (lon+180) * (Math.PI/180);
-    const x = -(radius * Math.sin(phi) * Math.cos(theta));
-    const z = (radius * Math.sin(phi) * Math.sin(theta));
-    const y = (radius * Math.cos(phi));
-    return new THREE.Vector3(x,y,z);
-  }
-
-  function plotQuakeOnGlobe(lat, lon, mag){
-    const v = latLonToVec3(lat, lon, 3);
-    const geom = new THREE.SphereGeometry(0.03 + mag*0.02, 8, 8);
-    const mat = new THREE.MeshBasicMaterial({ color: 0xff5470 });
-    const m = new THREE.Mesh(geom, mat); m.position.copy(v);
-    state.globe.points.add(m);
-  }
-
-  /* ===== Charts ===== */
-  function makeWeatherChart(labels, temps){
-    if(state.charts.weather) state.charts.weather.destroy();
-    const ctx = document.getElementById('weatherChart');
-    state.charts.weather = new Chart(ctx, {
-      type: 'line',
-      data: { labels, datasets: [{ label:'Temp (°C)', data: temps }] },
-      options: { animation:false, responsive:true, scales:{ x:{ ticks:{ color:'#7aa2c2'} }, y:{ ticks:{ color:'#7aa2c2'} } }, plugins:{ legend:{ labels:{ color:'#c8e1ff'} } } }
-    });
-  }
-  function makeQuakeChart(labels, mags){
-    if(state.charts.quake) state.charts.quake.destroy();
-    const ctx = document.getElementById('quakeChart');
-    state.charts.quake = new Chart(ctx, {
-      type: 'bar',
-      data: { labels, datasets: [{ label:'Magnitude (M)', data: mags }] },
-      options: { animation:false, responsive:true, scales:{ x:{ ticks:{ color:'#7aa2c2'} }, y:{ ticks:{ color:'#7aa2c2'} } }, plugins:{ legend:{ labels:{ color:'#c8e1ff'} } } }
-    });
-  }
-
-  /* ===== Data Fetchers ===== */
   async function fetchWeather(){
-    const { lat, lon } = state.coords;
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,pressure_msl,windspeed_10m&current_weather=true`;
-    const res = await fetch(url);
-    const data = await res.json();
-    state.weather = data.current_weather;
-    state.weatherHourly = data.hourly;
-    const idxs = data.hourly.time.slice(0, 12).map(t => new Date(t).toLocaleTimeString([], {hour:'2-digit'}));
-    makeWeatherChart(idxs, data.hourly.temperature_2m.slice(0,12));
-    $('#weatherMeta').textContent = `Lat ${lat.toFixed(3)}, Lon ${lon.toFixed(3)} // Temp ${state.weather.temperature}°C // Wind ${state.weather.windspeed} km/h // Pressure (msl) sample: ${data.hourly.pressure_msl[0]} hPa`;
-    appendLog('ATM', `Pressure ${data.hourly.pressure_msl[0]} hPa — deviation +${(Math.random()*0.6).toFixed(2)}%`);
+    try{
+      const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=39.924&longitude=-83.808&hourly=temperature_2m');
+      const data = await res.json();
+      state.weather = data.hourly.temperature_2m.slice(0,12);
+      new Chart($('#weatherChart'), {type:'line',data:{labels:[...Array(12).keys()],datasets:[{label:'°C',data:state.weather}]}});
+      $('#weatherMeta').textContent=`Sample temp: ${state.weather[0]}°C`;
+      appendLog('Weather loaded');
+    }catch(e){appendLog('Weather fetch failed');}
   }
 
   async function fetchQuakes(){
-    const url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson';
-    const res = await fetch(url);
-    const data = await res.json();
-    const features = data.features.slice(0, 12);
-    state.quakes = features.map(f=>({
-      mag: f.properties.mag,
-      place: f.properties.place,
-      time: new Date(f.properties.time),
-      lat: f.geometry.coordinates[1],
-      lon: f.geometry.coordinates[0]
-    }));
-
-    // Update nodes & globe points
-    state.globe.points.clear?.();
-    state.quakes.forEach(q => { plotQuakeOnGlobe(q.lat, q.lon, q.mag||0); });
-    geoBadge.textContent = `${state.quakes.length} nodes`;
-
-    makeQuakeChart(state.quakes.map(q=>q.place.split(',')[0].slice(0,12)), state.quakes.map(q=>q.mag??0));
-    $('#quakeMeta').textContent = `USGS feed: ${state.quakes.length} events // last @ ${state.quakes[0] ? state.quakes[0].time.toUTCString() : 'n/a'}`;
-
-    // Log a few significant ones
-    state.quakes.slice(0,3).forEach(q=>{
-      appendLog('SEIS', `Node — Magnitude ${q.mag?.toFixed(1)} @ ${q.lat.toFixed(3)}° ${q.lon.toFixed(3)}° // ${q.place}`);
-    });
+    try{
+      const res = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson');
+      const data = await res.json();
+      state.quakes = data.features.slice(0,5).map(f=>`M${f.properties.mag} @ ${f.properties.place}`);
+      new Chart($('#quakeChart'), {type:'bar',data:{labels:state.quakes.map((_,i)=>i+1),datasets:[{label:'Magnitude',data:data.features.slice(0,5).map(f=>f.properties.mag)}]}});
+      $('#quakeMeta').textContent=state.quakes.join('; ');
+      appendLog('Quakes loaded');
+    }catch(e){appendLog('Quake fetch failed');}
   }
 
   async function fetchISS(){
-    const url = 'https://api.wheretheiss.at/v1/satellites/25544';
-    const res = await fetch(url);
-    const data = await res.json();
-    state.iss = data;
-    issBox.innerHTML = `
-      <div>[OBJECT] 1998-067A // ISS</div>
-      <div>Latitude: ${data.latitude.toFixed(3)}°</div>
-      <div>Longitude: ${data.longitude.toFixed(3)}°</div>
-      <div>Altitude: ${data.altitude.toFixed(2)} km</div>
-      <div>Velocity: ${data.velocity.toFixed(2)} km/h</div>
-      <div>Visibility: ${data.visibility}</div>
-      <div>Timestamp: ${new Date(data.timestamp*1000).toUTCString()}</div>
-    `;
-    appendLog('LEO', `1998-067A Δvector shift ${(Math.random()*0.004).toFixed(4)}° // Lat ${data.latitude.toFixed(2)} Lon ${data.longitude.toFixed(2)}`);
-  }
-
-  async function fetchKp(){
     try{
-      const url = 'https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json';
-      const res = await fetch(url);
-      const arr = await res.json(); // [[header...],[ts,kp],...]
-      const last = arr[arr.length-1];
-      const kp = Number(last[1]);
-      appendLog('SOL', `Kp Index ${kp} ${kp>=5? '— geomagnetic storm threshold crossed':''}`, kp>=5);
-    }catch(e){ /* ignore if blocked */ }
+      const res = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
+      const data = await res.json();
+      state.iss=data;
+      $('#issBox').textContent=`Lat:${data.latitude.toFixed(2)} Lon:${data.longitude.toFixed(2)}`;
+      appendLog('ISS data updated');
+    }catch(e){appendLog('ISS fetch failed');}
   }
 
-  /* ===== Geolocation ===== */
-  function getGeo(){
-    if(navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(pos=>{
-        state.coords.lat = pos.coords.latitude; state.coords.lon = pos.coords.longitude;
-        appendLog('GEO', `fix acquired @ ${state.coords.lat.toFixed(3)}°, ${state.coords.lon.toFixed(3)}°`);
-        fetchWeather();
-      }, _err=>{ appendLog('GEO', 'fallback location engaged'); fetchWeather(); }, { enableHighAccuracy:true, timeout:4000 });
-    } else { appendLog('GEO','not available'); fetchWeather(); }
-  }
+  $('#cmd').addEventListener('keydown',e=>{if(e.key==='Enter'){const val=e.target.value;appendLog('CMD>'+val); e.target.value='';}});
 
-  /* ===== Console ===== */
-  const cmd = document.getElementById('cmd');
-  const commands = {
-    help(){
-      return `available: help | status nodes | status node <id> | iss | weather | seismic | analyze local | anomaly scan`;
-    },
-    'status nodes'(){
-      const out = [
-        `AE3 — Solar Activity Monitor // Kp index variable`,
-        `SEI — Seismic Array // ${state.quakes.length} events tracked`,
-        `ATM — Atmospheric Telemetry // temp ${state.weather?.temperature??'?'}°C`,
-        `LEO — Orbital Tracker // 1998-067A lock`
-      ];
-      return out.join('\n');
-    },
-    'status node AE3'(){
-      return `Node AE3 — Solar Activity Monitor\nLast Ping: ${nowISO()}\nParameter: Planetary K-index // see: SOL feed\nStatus: ${Math.random()>0.2? 'Monitoring' : 'Alert'}`;
-    },
-    iss(){ if(!state.iss) return 'no fix'; return `ISS lat ${state.iss.latitude.toFixed(2)} lon ${state.iss.longitude.toFixed(2)} alt ${state.iss.altitude.toFixed(1)}km vel ${state.iss.velocity.toFixed(1)}km/h`; },
-    weather(){ if(!state.weather) return 'loading'; return `Local temp ${state.weather.temperature}°C // wind ${state.weather.windspeed} km/h`; },
-    seismic(){ if(!state.quakes.length) return 'no events'; return state.quakes.slice(0,5).map(q=>`M${q.mag?.toFixed(1)} ${q.place}`).join('\n'); },
-    'analyze local'(){
-      const t = state.weather?.temperature ?? 0; const mags = state.quakes.map(q=>q.mag||0);
-      const avg = mags.length? (mags.reduce((a,b)=>a+b,0)/mags.length).toFixed(2) : 'n/a';
-      return `Local vector synthesis:\n• Temp ${t}°C\n• Seismic avg M ${avg}\n• ISS vis ${state.iss?.visibility||'unknown'}\nInference: stable baseline — track anomalies.`;
-    },
-    'anomaly scan'(){
-      const hit = Math.random()>0.7; return hit? `Anomaly ClusterID: SYN-${Math.random().toString(36).slice(2,5).toUpperCase()}${Math.floor(Math.random()*9)} detected — Classification: Unresolved` : 'No significant anomalies.';
-    }
-  };
-
-  cmd.addEventListener('keydown', (e)=>{
-    if(e.key==='Enter'){
-      const input = cmd.value.trim(); if(!input) return;
-      appendLog('CMD', `> ${input}`);
-      const handler = commands[input] || commands['status node AE3'] && input.startsWith('status node AE3') && commands['status node AE3'];
-      let out = handler ? handler() : `unknown: ${input}`;
-      (out+'' ).split('\n').forEach(line=> appendLog('OUT', line));
-      cmd.value='';
-    }
-  });
-
-  /* ===== Init ===== */
-  async function init(){
-    initGlobe();
-    appendLog('CORE','vector solvers online');
-    getGeo();
-    await fetchQuakes();
-    await fetchISS();
-    await fetchKp();
-    setInterval(fetchISS, 15000);
-    setInterval(fetchQuakes, 60*1000);
-    setInterval(fetchKp, 5*60*1000);
-    setInterval(()=> appendLog('TRACE', `Heartbeat ${Math.random().toString(16).slice(2,8)} // entropy ${Math.floor(Math.random()*1000)}`), 4000);
-  }
+  fetchWeather(); fetchQuakes(); fetchISS();
+  setInterval(fetchISS,15000);
 })();
 </script>
 </body>
