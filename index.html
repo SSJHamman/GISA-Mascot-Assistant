@@ -1,62 +1,473 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>School Tools Hub</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Campus Tools Hub</title>
+  <style>
+    :root{
+      --bg: #0f172a;           /* slate-900 */
+      --panel: #0b1226;        /* deep navy */
+      --panel-2:#111a33;       /* slight contrast */
+      --text: #e5e7eb;         /* gray-200 */
+      --muted:#9aa3b2;         /* cool gray */
+      --accent:#5cc6d0;        /* teal-cyan (professional but friendly) */
+      --accent-2:#8fe3c9;      /* mint hint */
+      --ok:#22c55e;
+      --warn:#f59e0b;
+      --focus: #7dd3fc;
+      --card: #0e162d;
+      --card-contrast:#0b1226;
+      --border:#1f2b4a;
+      --shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.02);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      color:var(--text); background: radial-gradient(1200px 600px at 90% -10%, rgba(92,198,208,.10), transparent 60%), var(--bg);
+      line-height:1.4;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:1200px; margin-inline:auto; padding:28px}
+    header{
+      display:grid; grid-template-columns: 72px 1fr auto; gap:18px; align-items:center;
+      background:linear-gradient(180deg, rgba(255,255,255,.02), transparent), var(--panel);
+      border:1px solid var(--border); border-radius:20px; padding:14px 18px; box-shadow:var(--shadow);
+    }
+    /* Mascot container */
+    .mascot{
+      width:64px; aspect-ratio:1; display:grid; place-items:center; position:relative;
+    }
+    /* Inline SVG scales to container */
+    .brand{font-weight:700; letter-spacing:.2px}
+    .brand small{display:block; color:var(--muted); font-weight:500; margin-top:2px}
+    .header-actions{display:flex; gap:10px; align-items:center}
+    .btn{
+      padding:10px 14px; border-radius:999px; border:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0));
+      box-shadow:var(--shadow); font-weight:600; font-size:14px;
+    }
+    .btn.primary{background:linear-gradient(180deg, rgba(92,198,208,.18), rgba(92,198,208,.08)); border-color:#2a7480}
+    .search{
+      grid-column:1 / -1; display:flex; gap:10px; margin-top:10px
+    }
+    .input{
+      flex:1; padding:12px 14px; border-radius:14px; border:1px solid var(--border);
+      background:var(--panel-2); color:var(--text); font-size:14px; outline:none;
+    }
+    .input:focus{border-color:var(--focus); box-shadow:0 0 0 3px rgba(125,211,252,.15)}
+    main{margin-top:24px; display:grid; grid-template-columns: 280px 1fr; gap:24px}
+    .sidebar{
+      background:var(--panel); border:1px solid var(--border); border-radius:14px; box-shadow:var(--shadow);
+      padding:14px;
+    }
+    .section-title{font-size:12px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin:8px 0 10px}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px; padding:8px 10px;
+      border:1px solid var(--border); border-radius:999px; font-weight:600; font-size:12px; margin:0 8px 8px 0;
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+    }
+    .stats{
+      margin-top:12px; display:grid; gap:10px;
+    }
+    .kpi{
+      background:var(--card-contrast); border:1px solid var(--border);
+      border-radius:10px; padding:10px; display:flex; justify-content:space-between; align-items:center;
+    }
+    .kpi .num{font-weight:800}
+    .content{
+      min-width:0; display:grid; gap:18px;
+    }
+    .panel{
+      background:var(--panel); border:1px solid var(--border); border-radius:18px; padding:16px; box-shadow:var(--shadow)
+    }
+    .tool-grid{
+      display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:14px;
+    }
+    .card{
+      background:var(--card); border:1px solid var(--border); padding:14px;
+      display:grid; grid-template-rows: auto 1fr auto; gap:8px;
+      transition:transform .08s ease, border-color .2s ease, background .2s ease;
+      box-shadow:var(--shadow);
+    }
+    /* mix of rounded and sharp corners */
+    .card:nth-child(6n+1){border-radius:16px}
+    .card:nth-child(6n+2){border-radius:6px}
+    .card:nth-child(6n+3){border-radius:14px}
+    .card:nth-child(6n+4){border-radius:0}
+    .card:nth-child(6n+5){border-radius:10px}
+    .card:nth-child(6n+6){border-radius:22px}
+    .card:hover{transform:translateY(-2px); border-color:#2a7480; background:#0f1a35}
+    .tool-top{display:flex; align-items:center; gap:10px}
+    .tool-ico{width:28px; height:28px; display:grid; place-items:center; border-radius:8px; background:rgba(92,198,208,.12); border:1px solid #2a7480}
+    .tool-name{font-weight:700}
+    .tool-desc{color:var(--muted); font-size:13px}
+    .tool-cta{display:flex; justify-content:space-between; align-items:center; gap:8px}
+    .tiny{font-size:12px; color:var(--muted)}
+    .badge{font-size:11px; padding:4px 8px; border-radius:999px; border:1px solid var(--border); background:rgba(143,227,201,.08)}
+    .notice{
+      border:1px dashed #2a7480; background:linear-gradient(180deg, rgba(143,227,201,.08), rgba(92,198,208,.03));
+      border-radius:0; padding:12px; display:flex; gap:10px; align-items:flex-start
+    }
+    footer{margin:20px 0 40px; color:var(--muted); font-size:12px}
+    /* Sticky mascot bubble (subtle, “1% cute”) */
+    .assistant{
+      position:fixed; right:22px; bottom:22px; width:240px;
+      background:var(--panel); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow);
+      padding:12px; display:flex; gap:10px; align-items:flex-start
+    }
+    .assistant .face{width:44px; height:44px}
+    .assistant p{margin:0; font-size:13px}
+    .assistant .ping{font-size:11px; color:var(--muted)}
+    @media (max-width: 1100px){
+      .tool-grid{grid-template-columns: repeat(3, 1fr)}
+    }
+    @media (max-width: 800px){
+      main{grid-template-columns: 1fr}
+      .tool-grid{grid-template-columns: repeat(2, 1fr)}
+      header{grid-template-columns: 56px 1fr}
+      .header-actions{display:none}
+    }
+    @media (max-width: 480px){
+      .tool-grid{grid-template-columns: 1fr}
+    }
+    /* Focus visibility */
+    .card:focus-within, .btn:focus-visible, .pill:focus-visible, .input:focus-visible{
+      outline:2px solid var(--focus); outline-offset:2px
+    }
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <h1>School Tools Hub</h1>
-  </header>
+  <div class="wrap">
+    <header aria-label="Campus Tools Header">
+      <div class="mascot" aria-hidden="true">
+        <!-- Minimal, professional mascot: a tidy owl with tiny blush -->
+        <svg viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Campus Owl Mascot">
+          <defs>
+            <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#5cc6d0" stop-opacity=".9"/>
+              <stop offset="1" stop-color="#5cc6d0" stop-opacity=".35"/>
+            </linearGradient>
+          </defs>
+          <circle cx="32" cy="32" r="30" fill="url(#g)" opacity=".15"/>
+          <path d="M16 26c0-6 5-11 11-11h10c6 0 11 5 11 11v10c0 6-5 11-11 11H27c-6 0-11-5-11-11V26z" fill="#17223f" stroke="#2a7480" stroke-width="1.5" />
+          <circle cx="26" cy="32" r="6" fill="#e5e7eb"/><circle cx="38" cy="32" r="6" fill="#e5e7eb"/>
+          <circle cx="26" cy="32" r="2.2" fill="#0f172a"/><circle cx="38" cy="32" r="2.2" fill="#0f172a"/>
+          <!-- tiny blush = 1% cute -->
+          <circle cx="20.5" cy="36.5" r="1.6" fill="#f59e0b" opacity=".5"/>
+          <circle cx="43.5" cy="36.5" r="1.6" fill="#f59e0b" opacity=".5"/>
+          <path d="M22 24l10 4 10-4" stroke="#8fe3c9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand">
+        Campus Tools Hub
+        <small>Fast, clean, and trustworthy student utilities</small>
+      </div>
+      <div class="header-actions">
+        <button class="btn">Docs</button>
+        <button class="btn">Support</button>
+        <button class="btn primary">Sign In</button>
+      </div>
+      <form class="search" role="search" aria-label="Search tools">
+        <input class="input" type="search" placeholder="Search tools (e.g., GPA, unit converter, citation)…" aria-label="Search input"/>
+        <button class="btn" type="submit">Search</button>
+      </form>
+    </header>
 
-  <main class="content">
-    <h2>Welcome</h2>
-    <p>Access 20+ professional tools for school. This page shows the mascot system (CSS-only).</p>
-  </main>
+    <main>
+      <!-- LEFT SIDEBAR -->
+      <aside class="sidebar" aria-label="Filters and quick stats">
+        <div class="section-title">Filter</div>
+        <div class="filters" role="group" aria-label="Tool categories">
+          <a class="pill" href="#">All</a>
+          <a class="pill" href="#">Math</a>
+          <a class="pill" href="#">Writing</a>
+          <a class="pill" href="#">Science</a>
+          <a class="pill" href="#">Planning</a>
+          <a class="pill" href="#">File</a>
+        </div>
 
-  <!-- ===== Mascot System (CSS-only) ===== -->
-  <section class="mascot-wrap" aria-label="Site assistant">
-    <!-- Toggle to pin bubble open (CSS-only) -->
-    <input type="checkbox" id="pinBubble" class="visually-hidden" aria-hidden="true" />
-    <label for="pinBubble" class="pin-toggle" title="Pin/unpin tips" aria-label="Pin or unpin tip bubble"></label>
+        <div class="section-title">Quick Stats</div>
+        <div class="stats">
+          <div class="kpi"><span>Available Tools</span><span class="num">24</span></div>
+          <div class="kpi"><span>Uptime</span><span class="num">99.9%</span></div>
+          <div class="kpi"><span>Status</span><span class="num" title="Operational" aria-label="Operational">●</span></div>
+        </div>
 
-    <!-- Bubble with cycling tips (CSS-only) -->
-    <div class="bubble" role="status" aria-live="polite">
-      <div class="tip tip1">Hi! I’m here if you need help.</div>
-      <div class="tip tip2">Try the GPA planner to map your term.</div>
-      <div class="tip tip3">Short breaks = better focus. 👀</div>
-      <div class="tip tip4">Use the Citation Builder for APA/MLA.</div>
+        <div class="section-title">Notices</div>
+        <div class="notice" role="note" aria-label="Service notice">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11 7h2v6h-2zm0 8h2v2h-2z"/></svg>
+          <div>
+            <strong>Reminder:</strong> Export your results for safekeeping after each session.
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT CONTENT -->
+      <section class="content">
+        <div class="panel">
+          <h2 style="margin:0 0 6px">Featured</h2>
+          <p class="tiny">Hand-picked tools used most by students this week.</p>
+        </div>
+
+        <div class="panel" aria-label="Tool grid">
+          <h3 style="margin:0 0 12px">All Tools</h3>
+          <div class="tool-grid">
+            <!-- 24 TOOL CARDS -->
+            <!-- Reusable icon (mini SVG notebook/gear/etc.) inside .tool-ico -->
+            <!-- 1 -->
+            <a class="card" href="#" aria-label="GPA Calculator">
+              <div class="tool-top">
+                <div class="tool-ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M4 5h16v2H4zm0 6h16v2H4zm0 6h10v2H4z"/></svg></div>
+                <div class="tool-name">GPA Calculator</div>
+              </div>
+              <div class="tool-desc">Weighted/unweighted, semester and cumulative.</div>
+              <div class="tool-cta">
+                <span class="badge">Academics</span><span class="tiny">Open →</span>
+              </div>
+            </a>
+            <!-- 2 -->
+            <a class="card" href="#" aria-label="Assignment Planner">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M7 3h10v2H7zM5 7h14v14H5z"/></svg></div>
+                <div class="tool-name">Assignment Planner</div>
+              </div>
+              <div class="tool-desc">Backplan from due dates with auto milestones.</div>
+              <div class="tool-cta"><span class="badge">Planning</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 3 -->
+            <a class="card" href="#" aria-label="Citation Builder">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M4 4h16v4H4zM4 10h10v10H4z"/></svg></div>
+                <div class="tool-name">Citation Builder</div>
+              </div>
+              <div class="tool-desc">APA, MLA, Chicago with URL/DOI lookup.</div>
+              <div class="tool-cta"><span class="badge">Writing</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 4 -->
+            <a class="card" href="#" aria-label="Unit Converter">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M7 3h10v4H7zM5 9h14v12H5z"/></svg></div>
+                <div class="tool-name">Unit Converter</div>
+              </div>
+              <div class="tool-desc">Length, mass, temperature, time, more.</div>
+              <div class="tool-cta"><span class="badge">Science</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 5 -->
+            <a class="card" href="#" aria-label="Percentage & Grade Calculator">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="m7 17l10-10M7 7h2v2H7zM15 15h2v2h-2z"/></svg></div>
+                <div class="tool-name">Percent ↔ Grade</div>
+              </div>
+              <div class="tool-desc">What-if scenarios for exams and finals.</div>
+              <div class="tool-cta"><span class="badge">Academics</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 6 -->
+            <a class="card" href="#" aria-label="Schedule Builder">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M5 5h14v14H5zm4 0v14"/></svg></div>
+                <div class="tool-name">Schedule Builder</div>
+              </div>
+              <div class="tool-desc">Drag-and-drop weekly timetable generator.</div>
+              <div class="tool-cta"><span class="badge">Planning</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 7 -->
+            <a class="card" href="#" aria-label="Pomodoro Timer">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="currentColor"/></svg></div>
+                <div class="tool-name">Pomodoro Timer</div>
+              </div>
+              <div class="tool-desc">Focus sessions with light analytics.</div>
+              <div class="tool-cta"><span class="badge">Productivity</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 8 -->
+            <a class="card" href="#" aria-label="Flashcard Maker">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" fill="currentColor"/></svg></div>
+                <div class="tool-name">Flashcard Maker</div>
+              </div>
+              <div class="tool-desc">Spaced repetition with CSV import/export.</div>
+              <div class="tool-cta"><span class="badge">Study</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 9 -->
+            <a class="card" href="#" aria-label="Equation Solver">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M6 7h12v2H6zm0 8h12v2H6z"/></svg></div>
+                <div class="tool-name">Equation Solver</div>
+              </div>
+              <div class="tool-desc">Linear, quadratic, systems; steps shown.</div>
+              <div class="tool-cta"><span class="badge">Math</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 10 -->
+            <a class="card" href="#" aria-label="Graph Plotter">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M4 20V4h2v14h14v2zM6 14l4-5 4 3 4-6"/></svg></div>
+                <div class="tool-name">Graph Plotter</div>
+              </div>
+              <div class="tool-desc">Functions, inequalities, and parametric.</div>
+              <div class="tool-cta"><span class="badge">Math</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 11 -->
+            <a class="card" href="#" aria-label="Lab Report Template">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M7 3h10v4H7zM5 7h14v14H5z"/></svg></div>
+                <div class="tool-name">Lab Report Template</div>
+              </div>
+              <div class="tool-desc">Structure and checklist for labs.</div>
+              <div class="tool-cta"><span class="badge">Science</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 12 -->
+            <a class="card" href="#" aria-label="Periodic Table">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" fill="currentColor"/></svg></div>
+                <div class="tool-name">Periodic Table</div>
+              </div>
+              <div class="tool-desc">Search elements, trends, and properties.</div>
+              <div class="tool-cta"><span class="badge">Science</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 13 -->
+            <a class="card" href="#" aria-label="Probability Simulator">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><circle cx="8" cy="12" r="3" fill="currentColor"/><circle cx="16" cy="12" r="3" fill="currentColor"/></svg></div>
+                <div class="tool-name">Probability Simulator</div>
+              </div>
+              <div class="tool-desc">Dice, coins, custom distributions.</div>
+              <div class="tool-cta"><span class="badge">Math</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 14 -->
+            <a class="card" href="#" aria-label="Resume Builder">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M6 4h12v16H6zM8 8h8"/></svg></div>
+                <div class="tool-name">Resume Builder</div>
+              </div>
+              <div class="tool-desc">ATS-friendly templates with guidance.</div>
+              <div class="tool-cta"><span class="badge">Career</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 15 -->
+            <a class="card" href="#" aria-label="Cover Letter Helper">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="m4 7 8 6 8-6v10H4z"/></svg></div>
+                <div class="tool-name">Cover Letter Helper</div>
+              </div>
+              <div class="tool-desc">Bullet → narrative with tone options.</div>
+              <div class="tool-cta"><span class="badge">Career</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 16 -->
+            <a class="card" href="#" aria-label="Reading Time Estimator">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M4 6h16v2H4zM4 10h16v2H4zM4 14h10v2H4z"/></svg></div>
+                <div class="tool-name">Reading Time</div>
+              </div>
+              <div class="tool-desc">Words, difficulty, and skimming mode.</div>
+              <div class="tool-cta"><span class="badge">Writing</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 17 -->
+            <a class="card" href="#" aria-label="Essay Outline Generator">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M6 6h12v2H6zm0 4h9v2H6zm0 4h12v2H6z"/></svg></div>
+                <div class="tool-name">Essay Outline</div>
+              </div>
+              <div class="tool-desc">Thesis-first scaffolding for essays.</div>
+              <div class="tool-cta"><span class="badge">Writing</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 18 -->
+            <a class="card" href="#" aria-label="Slide Deck Generator">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="10" fill="currentColor"/></svg></div>
+                <div class="tool-name">Slide Deck</div>
+              </div>
+              <div class="tool-desc">Simple slides from an outline.</div>
+              <div class="tool-cta"><span class="badge">Present</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 19 -->
+            <a class="card" href="#" aria-label="PDF Merger & Splitter">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M7 4h10v6H7zM4 14h16v6H4z"/></svg></div>
+                <div class="tool-name">PDF Merge/Split</div>
+              </div>
+              <div class="tool-desc">Combine, extract, and reorder pages.</div>
+              <div class="tool-cta"><span class="badge">Files</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 20 -->
+            <a class="card" href="#" aria-label="Image Compressor">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M4 6h16v12H4zM8 14l3-3 5 5"/></svg></div>
+                <div class="tool-name">Image Compressor</div>
+              </div>
+              <div class="tool-desc">Shrink images for submissions.</div>
+              <div class="tool-cta"><span class="badge">Files</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 21 -->
+            <a class="card" href="#" aria-label="Budget Tracker">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M5 19V5h2v12h12v2z"/></svg></div>
+                <div class="tool-name">Budget Tracker</div>
+              </div>
+              <div class="tool-desc">Monthly overview with categories.</div>
+              <div class="tool-cta"><span class="badge">Life</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 22 -->
+            <a class="card" href="#" aria-label="Time Zone Converter">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="currentColor"/></svg></div>
+                <div class="tool-name">Time Zone</div>
+              </div>
+              <div class="tool-desc">Schedule across regions with ease.</div>
+              <div class="tool-cta"><span class="badge">Utilities</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 23 -->
+            <a class="card" href="#" aria-label="Language Practice">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M4 4h16v8H4zM4 14h10v6H4z"/></svg></div>
+                <div class="tool-name">Language Practice</div>
+              </div>
+              <div class="tool-desc">Vocab drills & mini conversations.</div>
+              <div class="tool-cta"><span class="badge">Study</span><span class="tiny">Open →</span></div>
+            </a>
+            <!-- 24 -->
+            <a class="card" href="#" aria-label="Code Snippet Formatter">
+              <div class="tool-top">
+                <div class="tool-ico"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="m8 16-4-4 4-4m8 0 4 4-4 4"/></svg></div>
+                <div class="tool-name">Code Formatter</div>
+              </div>
+              <div class="tool-desc">Beautify and lint common languages.</div>
+              <div class="tool-cta"><span class="badge">Dev</span><span class="tiny">Open →</span></div>
+            </a>
+          </div>
+        </div>
+
+        <div class="panel" aria-label="Help and accessibility">
+          <h3 style="margin:0 0 8px">Need Help?</h3>
+          <p class="tiny">Keyboard: Tab to focus, Enter to open. Screen readers: each card includes an accessible label.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      © <span id="y"></span> Campus Tools Hub · Privacy · Terms
+    </footer>
+  </div>
+
+  <!-- Subtle assistant bubble -->
+  <div class="assistant" role="complementary" aria-label="Mascot assistant">
+    <svg class="face" viewBox="0 0 64 64" aria-hidden="true">
+      <circle cx="32" cy="32" r="22" fill="#17223f" stroke="#2a7480" stroke-width="1.5"/>
+      <circle cx="24.5" cy="30" r="4" fill="#e5e7eb"/><circle cx="39.5" cy="30" r="4" fill="#e5e7eb"/>
+      <circle cx="24.5" cy="30" r="1.6" fill="#0f172a"/><circle cx="39.5" cy="30" r="1.6" fill="#0f172a"/>
+      <path d="M24 40c3 2 13 2 16 0" stroke="#8fe3c9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="20.5" cy="36.5" r="1.5" fill="#f59e0b" opacity=".5"/>
+      <circle cx="43.5" cy="36.5" r="1.5" fill="#f59e0b" opacity=".5"/>
+    </svg>
+    <div>
+      <p>Hi! I can guide you to the right tool. Try the search bar for “citations” or “GPA”.</p>
+      <div class="ping">Tip: export results after you’re done.</div>
     </div>
+  </div>
 
-    <!-- Clickable/Focusable mascot (inline SVG, no JS) -->
-    <button class="mascot" aria-label="Open assistant">
-      <!-- Simple geometric buddy: professional with 1% cute -->
-      <svg viewBox="0 0 160 180" width="120" height="135" aria-hidden="true">
-        <!-- body -->
-        <g class="body">
-          <rect x="20" y="30" rx="18" ry="18" width="120" height="120" class="body-shape"/>
-          <rect x="58" y="12" rx="8" ry="8" width="44" height="20" class="clip-tab"/>
-        </g>
-        <!-- face plate -->
-        <rect x="30" y="40" rx="12" ry="12" width="100" height="70" class="face"/>
-        <!-- eyes -->
-        <g class="eyes">
-          <circle cx="68" cy="75" r="8" class="eye"/>
-          <circle cx="108" cy="75" r="8" class="eye"/>
-          <!-- blink bars -->
-          <rect x="60" y="72" width="16" height="3" class="blink" />
-          <rect x="100" y="72" width="16" height="3" class="blink" />
-        </g>
-        <!-- smile -->
-        <path d="M65 95 Q80 108 95 95" class="smile" />
-      </svg>
-    </button>
-  </section>
-
-  <footer class="site-footer">
-    © 2025 School Tools Hub
-  </footer>
+  <script>
+    // tiny progressive enhancement
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
