@@ -6,133 +6,111 @@
   <title>School Tools Hub</title>
   <style>
     body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f5f7fa;
-      color: #333;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f9fafc;
+      color: #222;
     }
 
     header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 1.2rem 2rem;
-      background: #2f3e9e;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: #2f4f90;
       color: white;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      font-size: 1.5rem;
-      font-weight: bold;
+    header h1 {
+      font-size: 1.4rem;
+      margin: 0;
     }
 
     .mascot {
       width: 60px;
       height: 60px;
-      border-radius: 15%;
-      margin-left: 10px;
-      background: #fff;
+      background: #ffd166;
+      border-radius: 10%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.8rem;
-      color: #2f3e9e;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      font-size: 2rem;
+      font-weight: bold;
+      color: #2f4f90;
     }
 
     main {
-      max-width: 1100px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-
-    h1 {
-      font-size: 1.8rem;
-      text-align: center;
-      margin-bottom: 1.5rem;
-      color: #2f3e9e;
+      padding: 2rem;
     }
 
     .tools-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
     }
 
     .tool-card {
       background: white;
-      border: 1px solid #e0e0e0;
-      padding: 1.2rem;
-      border-radius: 12px;
+      border: 1px solid #e2e5ea;
+      border-radius: 8px;
+      padding: 1rem;
       text-align: center;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      transition: box-shadow 0.2s ease;
       cursor: pointer;
     }
 
     .tool-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
     .tool-card h3 {
+      margin: 0.5rem 0 0;
       font-size: 1rem;
-      margin: 0.6rem 0;
-      color: #2f3e9e;
     }
 
     footer {
       text-align: center;
       padding: 1rem;
-      margin-top: 2rem;
+      background: #f0f2f6;
       font-size: 0.9rem;
-      color: #666;
-    }
-
-    /* Subtle cute touch */
-    .mascot::after {
-      content: "📘"; /* Mascot as friendly schoolbook */
-      font-size: 1.5rem;
+      color: #555;
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">School Tools Hub</div>
-    <div class="mascot"></div>
+    <h1>School Tools Hub</h1>
+    <div class="mascot">📘</div>
   </header>
 
   <main>
-    <h1>All-in-One Tools for Students</h1>
+    <h2>Available Tools</h2>
     <div class="tools-grid">
       <div class="tool-card"><h3>Calculator</h3></div>
       <div class="tool-card"><h3>Dictionary</h3></div>
       <div class="tool-card"><h3>Thesaurus</h3></div>
-      <div class="tool-card"><h3>Plagiarism Checker</h3></div>
-      <div class="tool-card"><h3>Grammar Helper</h3></div>
-      <div class="tool-card"><h3>Note Organizer</h3></div>
+      <div class="tool-card"><h3>Note Pad</h3></div>
       <div class="tool-card"><h3>Flashcards</h3></div>
-      <div class="tool-card"><h3>Study Timer</h3></div>
-      <div class="tool-card"><h3>Equation Solver</h3></div>
+      <div class="tool-card"><h3>Timer</h3></div>
+      <div class="tool-card"><h3>To-Do List</h3></div>
       <div class="tool-card"><h3>Periodic Table</h3></div>
       <div class="tool-card"><h3>Unit Converter</h3></div>
-      <div class="tool-card"><h3>Translator</h3></div>
-      <div class="tool-card"><h3>Mind Map</h3></div>
-      <div class="tool-card"><h3>Essay Formatter</h3></div>
-      <div class="tool-card"><h3>Reading List</h3></div>
+      <div class="tool-card"><h3>Grammar Checker</h3></div>
+      <div class="tool-card"><h3>Equation Solver</h3></div>
+      <div class="tool-card"><h3>Map</h3></div>
+      <div class="tool-card"><h3>Essay Organizer</h3></div>
       <div class="tool-card"><h3>Quiz Maker</h3></div>
-      <div class="tool-card"><h3>Presentation Builder</h3></div>
-      <div class="tool-card"><h3>Citation Generator</h3></div>
-      <div class="tool-card"><h3>Data Graphs</h3></div>
-      <div class="tool-card"><h3>Research Notes</h3></div>
+      <div class="tool-card"><h3>Reading Tracker</h3></div>
+      <div class="tool-card"><h3>Vocabulary Builder</h3></div>
+      <div class="tool-card"><h3>Science Tools</h3></div>
+      <div class="tool-card"><h3>History Timeline</h3></div>
+      <div class="tool-card"><h3>Math Games</h3></div>
+      <div class="tool-card"><h3>Presentation Helper</h3></div>
     </div>
   </main>
 
   <footer>
-    © 2025 School Tools Hub. All rights reserved.
+    © 2025 School Tools Hub. Made for students.
   </footer>
 </body>
 </html>
