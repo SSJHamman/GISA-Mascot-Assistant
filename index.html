@@ -1,61 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>School Tools Hub</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <h1>School Tools Hub</h1>
-    </div>
-    <nav>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Tools</a></li>
-        <li><a href="#">Resources</a></li>
-        <li><a href="#">About</a></li>
-      </ul>
-    </nav>
+  <header class="site-header">
+    <h1>School Tools Hub</h1>
   </header>
 
-  <main>
-    <section class="intro">
-      <h2>Welcome to Your School Companion</h2>
-      <p>Access over 20 powerful tools designed to make learning easier and more enjoyable.</p>
-    </section>
-
-    <section class="tools-grid">
-      <div class="tool-card">
-        <h3>Calculator</h3>
-        <p>Quick and reliable math solutions.</p>
-        <button>Open</button>
-      </div>
-      <div class="tool-card">
-        <h3>Note Taker</h3>
-        <p>Organize your thoughts efficiently.</p>
-        <button>Open</button>
-      </div>
-      <div class="tool-card">
-        <h3>Flashcards</h3>
-        <p>Memorize concepts the smart way.</p>
-        <button>Open</button>
-      </div>
-    </section>
+  <main class="content">
+    <h2>Welcome</h2>
+    <p>Access 20+ professional tools for school. This page shows the mascot system (CSS-only).</p>
   </main>
 
-  <!-- Mascot System -->
-  <div id="mascot">
-    <div class="mascot-character"></div>
-    <div class="mascot-bubble" id="mascotBubble">Hello! I’m here to help you ✨</div>
-  </div>
+  <!-- ===== Mascot System (CSS-only) ===== -->
+  <section class="mascot-wrap" aria-label="Site assistant">
+    <!-- Toggle to pin bubble open (CSS-only) -->
+    <input type="checkbox" id="pinBubble" class="visually-hidden" aria-hidden="true" />
+    <label for="pinBubble" class="pin-toggle" title="Pin/unpin tips" aria-label="Pin or unpin tip bubble"></label>
 
-  <footer>
-    <p>&copy; 2025 School Tools Hub. All rights reserved.</p>
+    <!-- Bubble with cycling tips (CSS-only) -->
+    <div class="bubble" role="status" aria-live="polite">
+      <div class="tip tip1">Hi! I’m here if you need help.</div>
+      <div class="tip tip2">Try the GPA planner to map your term.</div>
+      <div class="tip tip3">Short breaks = better focus. 👀</div>
+      <div class="tip tip4">Use the Citation Builder for APA/MLA.</div>
+    </div>
+
+    <!-- Clickable/Focusable mascot (inline SVG, no JS) -->
+    <button class="mascot" aria-label="Open assistant">
+      <!-- Simple geometric buddy: professional with 1% cute -->
+      <svg viewBox="0 0 160 180" width="120" height="135" aria-hidden="true">
+        <!-- body -->
+        <g class="body">
+          <rect x="20" y="30" rx="18" ry="18" width="120" height="120" class="body-shape"/>
+          <rect x="58" y="12" rx="8" ry="8" width="44" height="20" class="clip-tab"/>
+        </g>
+        <!-- face plate -->
+        <rect x="30" y="40" rx="12" ry="12" width="100" height="70" class="face"/>
+        <!-- eyes -->
+        <g class="eyes">
+          <circle cx="68" cy="75" r="8" class="eye"/>
+          <circle cx="108" cy="75" r="8" class="eye"/>
+          <!-- blink bars -->
+          <rect x="60" y="72" width="16" height="3" class="blink" />
+          <rect x="100" y="72" width="16" height="3" class="blink" />
+        </g>
+        <!-- smile -->
+        <path d="M65 95 Q80 108 95 95" class="smile" />
+      </svg>
+    </button>
+  </section>
+
+  <footer class="site-footer">
+    © 2025 School Tools Hub
   </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
