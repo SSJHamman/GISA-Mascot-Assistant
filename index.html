@@ -1,37 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GISA STEM Dashboard</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Campus Tools — Pro Suite</title>
+  <meta name="color-scheme" content="light dark" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <header class="topbar" role="banner">
+    <a class="brand" href="#" aria-label="Campus Tools Home">
+      <div class="mascot" aria-hidden="true">
+        <i class="eye"></i><i class="eye2"></i><i class="smile"></i>
+      </div>
+      <div>
+        <h1>Campus Tools</h1>
+        <small>Professional suite for students & staff</small>
+      </div>
+    </a>
+  </header>
 
-<div id="dashboard">
-    <!-- Panels -->
-    <div class="panel" id="tasks-panel">
-        <h2>Tasks</h2>
-        <button class="btn-primary" onclick="mascotMoveTo('tasks-panel')">Interact</button>
+  <div class="controls" role="search">
+    <label class="sr-only" for="q">Search tools</label>
+    <div class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="currentColor" d="M21 21l-4.3-4.3m1.8-5.1a7 7 0 11-14 0 7 7 0 0114 0"/>
+      </svg>
+      <input id="q" placeholder="Search 24 tools…" autocomplete="off" />
     </div>
-
-    <div class="panel" id="tips-panel">
-        <h2>STEM Tips</h2>
-        <button class="btn-secondary" onclick="mascotMoveTo('tips-panel')">Interact</button>
+    <div class="filters" role="toolbar" aria-label="Quick filters">
+      <button class="chip" data-tag="study" aria-pressed="false">Study</button>
+      <button class="chip" data-tag="math" aria-pressed="false">Math</button>
+      <button class="chip" data-tag="writing" aria-pressed="false">Writing</button>
+      <button class="chip" data-tag="planning" aria-pressed="false">Planning</button>
+      <button class="chip" data-tag="dev" aria-pressed="false">Dev</button>
     </div>
+  </div>
 
-    <div class="panel" id="calc-panel">
-        <h2>Calculator</h2>
-        <button class="btn-secondary" onclick="mascotMoveTo('calc-panel')">Interact</button>
+  <main class="wrap" id="main" tabindex="-1">
+    <div class="section-title">
+      <h2>Pinned</h2>
+      <div class="count" id="pinCount">0 pinned</div>
     </div>
+    <div class="pinned" id="pinnedRow" aria-live="polite"></div>
 
-    <!-- Mascot Center -->
-    <div id="mascot-area">
-        <img src="mascot.png" id="mascot" alt="GISA Mascot">
-        <div id="mascot-bubble">Hello! Click a panel for me to visit! 🚀</div>
+    <div class="section-title">
+      <h2>All tools</h2>
+      <div class="count" id="toolCount">24 tools</div>
     </div>
-</div>
+    <section class="grid" id="grid" aria-live="polite"></section>
+  </main>
 
-<script src="mascot.js"></script>
+  <dialog id="drawer" aria-modal="true">
+    <div class="drawer-head">
+      <strong id="drawerTitle">Tool</strong>
+      <button class="btn ghost" id="closeDrawer" aria-label="Close">Close</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+    <div class="drawer-foot">
+      <div id="drawerMeta" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn" id="pinToggle">Pin</button>
+        <button class="btn primary" id="launch">Open</button>
+      </div>
+    </div>
+  </dialog>
+
+  <footer role="contentinfo">
+    © <span id="year"></span> Campus Tools. Designed for focus, built for speed.
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
