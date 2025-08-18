@@ -1,4 +1,4 @@
-const apiKey = "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"; // <--- put your key here
+const backendURL = "https://your-project-name.vercel.app/api/chat";
 
 async function sendMessage(message) {
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
