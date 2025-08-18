@@ -1,116 +1,869 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>School Tools Hub</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Honkers McFeathers • School Tools</title>
   <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: #f9fafc;
-      color: #222;
+    :root{
+      --bg:#0f1220;
+      --panel:#151933;
+      --panel-2:#0d1026;
+      --text:#e7ecff;
+      --muted:#a8b3d6;
+      --accent:#6ec5ff; /* 1% cute :) */
+      --accent-2:#ffd76e;
+      --ok:#28d17c;
+      --warn:#ff9a3c;
+      --error:#ff5776;
+      --radius-lg:18px;
+      --radius-md:12px;
+      --radius-sm:8px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color:var(--text); background: radial-gradient(1200px 700px at 80% -10%, #20306b33 0, transparent 60%), var(--bg);
+      letter-spacing:.2px;
+    }
+    a{color:var(--accent)}
+    header{
+      position:sticky; top:0; z-index:5;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(#10142aee,#10142acc);
+      border-bottom:1px solid #2a3158;
+    }
+    .nav{
+      max-width:1200px; margin:0 auto; padding:16px 20px; display:flex; gap:16px; align-items:center; justify-content:space-between;
+    }
+    .brand{display:flex; gap:14px; align-items:center}
+    .brand svg{width:44px; height:44px; filter:drop-shadow(0 4px 10px rgba(0,0,0,.3))}
+    .brand h1{margin:0; font-size:20px; font-weight:700; letter-spacing:.4px}
+    .searchbar{flex:1; max-width:520px; display:flex; gap:8px}
+    .input{
+      flex:1; background:var(--panel); border:1px solid #27305c; color:var(--text);
+      padding:12px 14px; border-radius:var(--radius-md);
+      outline:none; box-shadow: inset 0 0 0 1px transparent; transition:.2s;
+    }
+    .input:focus{box-shadow: inset 0 0 0 1px var(--accent)}
+    .chip{
+      background:var(--panel); border:1px solid #283160; padding:10px 12px; border-radius:999px; color:var(--muted); font-size:13px; cursor:default;
     }
 
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 2rem;
-      background: #2f4f90;
-      color: white;
+    main{max-width:1200px; margin:24px auto 120px; padding:0 20px}
+    .hero{
+      display:grid; grid-template-columns: 1.2fr .8fr; gap:18px; align-items:stretch;
     }
+    .card{
+      background: linear-gradient(180deg, var(--panel) 0, var(--panel-2) 100%);
+      border:1px solid #283160; border-radius:var(--radius-lg); box-shadow:var(--shadow);
+    }
+    .card-header{padding:18px 18px 0; border-bottom:1px solid #28316022}
+    .card-body{padding:18px}
+    .hero .intro{padding:22px}
+    .intro h2{margin:0 0 8px; font-size:26px}
+    .intro p{margin:0; color:var(--muted)}
 
-    header h1 {
-      font-size: 1.4rem;
-      margin: 0;
-    }
+    .filters{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+    .filters button{background:#111739; color:#b8c2e6; border:1px solid #26305c; padding:8px 12px; border-radius:10px; cursor:pointer}
+    .filters button.active{outline:2px solid var(--accent); color:var(--text)}
 
-    .mascot {
-      width: 60px;
-      height: 60px;
-      background: #ffd166;
-      border-radius: 10%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      font-weight: bold;
-      color: #2f4f90;
+    .tools{
+      margin-top:18px; display:grid; grid-template-columns: repeat(12, 1fr); gap:14px;
     }
+    .tool{grid-column: span 4; min-height:120px; display:flex; flex-direction:column}
+    @media (max-width:1000px){.tool{grid-column: span 6}.hero{grid-template-columns:1fr}}
+    @media (max-width:640px){.tool{grid-column: span 12}}
 
-    main {
-      padding: 2rem;
-    }
+    .tool h3{margin:0 0 6px; font-size:16px}
+    .tool p{margin:0 0 12px; color:var(--muted); font-size:13px}
+    .tool .tool-ui{margin-top:auto}
 
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 1rem;
-    }
+    .btn{background:linear-gradient(180deg,#2a3a75,#1c2655); border:1px solid #34448b; color:var(--text); padding:10px 12px; border-radius:10px; cursor:pointer}
+    .btn:disabled{opacity:.6; cursor:not-allowed}
+    .btn-ghost{background:#111739; border:1px solid #283160; color:#c7d3ff}
+    .btn-accent{background:linear-gradient(180deg, #7ed0ff, #3aa5e8); color:#0a1333; border:1px solid #89d6ff}
 
-    .tool-card {
-      background: white;
-      border: 1px solid #e2e5ea;
-      border-radius: 8px;
-      padding: 1rem;
-      text-align: center;
-      transition: box-shadow 0.2s ease;
-      cursor: pointer;
+    .row{display:flex; gap:8px; align-items:center}
+    .col{display:flex; flex-direction:column; gap:8px}
+    .label{font-size:12px; color:#9fb0e8}
+    .small{font-size:12px; color:#9fb0e8}
+    input[type="number"], input[type="text"], textarea, select{
+      background:#111739; border:1px solid #283160; color:var(--text); border-radius:10px; padding:10px 12px; outline:none; width:100%;
     }
+    textarea{min-height:90px; resize:vertical}
+    .output{background:#0d1233; border:1px dashed #37407e; color:#b9c6ff; border-radius:10px; padding:10px 12px}
 
-    .tool-card:hover {
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    /* Chatbot */
+    .chat-toggle{position:fixed; right:20px; bottom:20px; z-index:20}
+    .assistant{
+      position:fixed; right:20px; bottom:86px; width:360px; max-height:70vh; display:none; flex-direction:column; overflow:hidden; z-index:20;
+      border-radius:20px; border:1px solid #2a356c; box-shadow: var(--shadow);
+      background: radial-gradient(400px 220px at 110% -20%, #3aa5e81f 0, transparent 50%), linear-gradient(180deg, #171c3f, #0f1433 100%);
     }
+    .assistant.open{display:flex}
+    .asst-header{display:flex; align-items:center; gap:10px; padding:12px 14px; border-bottom:1px solid #2a356c}
+    .asst-header .title{font-weight:700}
+    .asst-body{padding:12px 14px; overflow:auto; display:flex; flex-direction:column; gap:10px}
+    .bubble{max-width:80%; padding:10px 12px; border-radius:12px; font-size:14px; line-height:1.35}
+    .bubble.user{align-self:flex-end; background:#1b2555}
+    .bubble.bot{align-self:flex-start; background:#15204a; border:1px solid #29346b}
+    .asst-input{display:flex; gap:8px; padding:10px; border-top:1px solid #2a356c; background:#0d1435}
 
-    .tool-card h3 {
-      margin: 0.5rem 0 0;
-      font-size: 1rem;
-    }
+    /* Mascot (SVG) */
+    .mascot-wrap{display:flex; align-items:center; gap:14px}
+    .tag{font-size:12px; padding:6px 8px; border-radius:999px; border:1px solid #2e3a73; color:#b8c5ff; background:#0c133a}
 
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: #f0f2f6;
-      font-size: 0.9rem;
-      color: #555;
-    }
+    /* Footer */
+    footer{max-width:1200px; margin:40px auto; padding:0 20px 60px; color:#9fb0e8}
   </style>
 </head>
 <body>
   <header>
-    <h1>School Tools Hub</h1>
-    <div class="mascot">📘</div>
+    <div class="nav">
+      <div class="brand">
+        <!-- Mascot logo (simple, friendly) -->
+        <svg viewBox="0 0 120 120" aria-hidden="true" role="img">
+          <defs>
+            <linearGradient id="wing" x1="0" x2="1">
+              <stop offset="0" stop-color="#8bd8ff"/>
+              <stop offset="1" stop-color="#53b4ff"/>
+            </linearGradient>
+          </defs>
+          <g transform="translate(10,10)">
+            <circle cx="50" cy="50" r="45" fill="#0b1239" stroke="#2a356c" stroke-width="3"/>
+            <circle cx="48" cy="52" r="24" fill="#18306a"/>
+            <ellipse cx="52" cy="57" rx="28" ry="14" fill="url(#wing)" opacity="0.9"/>
+            <circle cx="60" cy="38" r="10" fill="#6ec5ff"/>
+            <circle cx="63" cy="36" r="3" fill="#0f1220"/>
+            <polygon points="75,45 96,50 75,55" fill="#ffd76e"/>
+          </g>
+        </svg>
+        <div>
+          <h1>Honkers McFeathers</h1>
+          <div class="small">Your school-work copilot</div>
+        </div>
+      </div>
+      <div class="searchbar">
+        <input id="search" class="input" placeholder="Search tools (calculator, word count, GPA…)"/>
+        <button class="btn btn-ghost" id="clearSearch">Clear</button>
+      </div>
+      <span class="chip" title="Grade range focus">7th grade ready</span>
+    </div>
   </header>
 
   <main>
-    <h2>Available Tools</h2>
-    <div class="tools-grid">
-      <div class="tool-card"><h3>Calculator</h3></div>
-      <div class="tool-card"><h3>Dictionary</h3></div>
-      <div class="tool-card"><h3>Thesaurus</h3></div>
-      <div class="tool-card"><h3>Note Pad</h3></div>
-      <div class="tool-card"><h3>Flashcards</h3></div>
-      <div class="tool-card"><h3>Timer</h3></div>
-      <div class="tool-card"><h3>To-Do List</h3></div>
-      <div class="tool-card"><h3>Periodic Table</h3></div>
-      <div class="tool-card"><h3>Unit Converter</h3></div>
-      <div class="tool-card"><h3>Grammar Checker</h3></div>
-      <div class="tool-card"><h3>Equation Solver</h3></div>
-      <div class="tool-card"><h3>Map</h3></div>
-      <div class="tool-card"><h3>Essay Organizer</h3></div>
-      <div class="tool-card"><h3>Quiz Maker</h3></div>
-      <div class="tool-card"><h3>Reading Tracker</h3></div>
-      <div class="tool-card"><h3>Vocabulary Builder</h3></div>
-      <div class="tool-card"><h3>Science Tools</h3></div>
-      <div class="tool-card"><h3>History Timeline</h3></div>
-      <div class="tool-card"><h3>Math Games</h3></div>
-      <div class="tool-card"><h3>Presentation Helper</h3></div>
-    </div>
+    <section class="hero">
+      <div class="card intro">
+        <div class="mascot-wrap">
+          <svg width="64" height="64" viewBox="0 0 120 120" aria-hidden="true" role="img">
+            <use href="#" />
+          </svg>
+          <div>
+            <h2>All your school tools in one place</h2>
+            <p>Fast, clean, and 1% cute. Ask <strong>Honkers McFeathers</strong> for help, or dive straight into the tools.</p>
+            <div class="filters" id="filters"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><strong>Daily Backpack Check</strong> <span class="tag">Honkers watches this</span></div>
+        <div class="card-body">
+          <div class="small" style="margin-bottom:8px">Tick what you've packed today. Honkers will tell you if you're missing something.</div>
+          <div class="tools" style="grid-template-columns:repeat(2,1fr)">
+            <label><input type="checkbox" class="chk" data-key="notebook"> Notebook</label>
+            <label><input type="checkbox" class="chk" data-key="binder"> Binder / Folder</label>
+            <label><input type="checkbox" class="chk" data-key="pencils"> Pencils / Pens</label>
+            <label><input type="checkbox" class="chk" data-key="homework"> Homework</label>
+            <label><input type="checkbox" class="chk" data-key="charger"> Device + Charger</label>
+            <label><input type="checkbox" class="chk" data-key="water"> Water Bottle</label>
+            <label><input type="checkbox" class="chk" data-key="lunch"> Lunch / Snack</label>
+            <label><input type="checkbox" class="chk" data-key="pe"> PE Clothes (if needed)</label>
+          </div>
+          <div class="row" style="margin-top:12px; gap:12px">
+            <button class="btn" id="saveChecklist">Save</button>
+            <button class="btn btn-ghost" id="clearChecklist">Clear</button>
+            <div id="checklistStatus" class="small"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top:18px">
+      <div class="card">
+        <div class="card-header"><strong>Tools</strong></div>
+        <div class="card-body">
+          <div class="tools" id="toolGrid">
+            <!-- 1 Calculator -->
+            <div class="tool card" data-tags="math calculator numbers">
+              <div class="card-body">
+                <h3>Calculator</h3>
+                <p>Basic + parentheses. Example: <code>(5+3)*2</code></p>
+                <div class="row">
+                  <input id="calcIn" placeholder="Type expression" />
+                  <button class="btn" id="calcBtn">=</button>
+                </div>
+                <div id="calcOut" class="output" style="margin-top:8px">—</div>
+              </div>
+            </div>
+
+            <!-- 2 Unit Converter -->
+            <div class="tool card" data-tags="units convert length mass temperature">
+              <div class="card-body">
+                <h3>Unit Converter</h3>
+                <p>Length, mass, temperature</p>
+                <div class="row">
+                  <input type="number" id="ucVal" placeholder="Value" style="max-width:120px">
+                  <select id="ucType">
+                    <option value="length">Length</option>
+                    <option value="mass">Mass</option>
+                    <option value="temp">Temperature</option>
+                  </select>
+                </div>
+                <div class="row" style="margin-top:8px">
+                  <select id="ucFrom"></select>
+                  <span class="small">to</span>
+                  <select id="ucTo"></select>
+                  <button class="btn" id="ucBtn">Convert</button>
+                </div>
+                <div id="ucOut" class="output" style="margin-top:8px">—</div>
+              </div>
+            </div>
+
+            <!-- 3 Fraction Simplifier -->
+            <div class="tool card" data-tags="fractions math simplify">
+              <div class="card-body">
+                <h3>Simplify Fraction</h3>
+                <p>Reduce to lowest terms</p>
+                <div class="row">
+                  <input type="number" id="frA" placeholder="Numerator">
+                  <span>/</span>
+                  <input type="number" id="frB" placeholder="Denominator">
+                  <button class="btn" id="frBtn">Simplify</button>
+                </div>
+                <div id="frOut" class="output" style="margin-top:8px">—</div>
+              </div>
+            </div>
+
+            <!-- 4 Percent ↔ Decimal/Fraction -->
+            <div class="tool card" data-tags="percent percentage decimal fraction">
+              <div class="card-body">
+                <h3>Percent Converter</h3>
+                <p>Convert between percent, decimal, and fraction</p>
+                <div class="row">
+                  <input id="pcIn" placeholder="e.g. 37.5% or 0.375 or 3/8" />
+                  <button class="btn" id="pcBtn">Convert</button>
+                </div>
+                <div id="pcOut" class="output" style="margin-top:8px">—</div>
+              </div>
+            </div>
+
+            <!-- 5 Quadratic Solver -->
+            <div class="tool card" data-tags="quadratic math polynomial roots">
+              <div class="card-body">
+                <h3>Quadratic Solver</h3>
+                <p>ax² + bx + c = 0</p>
+                <div class="row">
+                  <input type="number" id="qa" placeholder="a">
+                  <input type="number" id="qb" placeholder="b">
+                  <input type="number" id="qc" placeholder="c">
+                  <button class="btn" id="qBtn">Solve</button>
+                </div>
+                <div id="qOut" class="output" style="margin-top:8px">—</div>
+              </div>
+            </div>
+
+            <!-- 6 Linear Solver -->
+            <div class="tool card" data-tags="algebra linear equation solve">
+              <div class="card-body">
+                <h3>Linear Equation</h3>
+                <p>Solve ax + b = c</p>
+                <div class="row">
+                  <input type="number" id="la" placeholder="a">
+                  <input type="number" id="lb" placeholder="b">
+                  <input type="number" id="lc" placeholder="c">
+                  <button class="btn" id="lBtn">Solve</button>
+                </div>
+                <div id="lOut" class="output" style="margin-top:8px">—</div>
+              </div>
+            </div>
+
+            <!-- 7 Word Counter -->
+            <div class="tool card" data-tags="english writing word count">
+              <div class="card-body">
+                <h3>Word & Character Count</h3>
+                <textarea id="wcIn" placeholder="Paste your paragraph here…"></textarea>
+                <div class="row" style="margin-top:8px; gap:12px">
+                  <button class="btn" id="wcBtn">Count</button>
+                  <div id="wcOut" class="output" style="flex:1">—</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 8 Reading Time -->
+            <div class="tool card" data-tags="reading time estimate">
+              <div class="card-body">
+                <h3>Reading Time</h3>
+                <p>Estimates at 200 wpm</p>
+                <textarea id="rtIn" placeholder="Paste text or a list…"></textarea>
+                <div class="row" style="margin-top:8px">
+                  <button class="btn" id="rtBtn">Estimate</button>
+                </div>
+                <div id="rtOut" class="output" style="margin-top:8px">—</div>
+              </div>
+            </div>
+
+            <!-- 9 Flashcards -->
+            <div class="tool card" data-tags="study flashcards memorize spaced repetition">
+              <div class="card-body">
+                <h3>Flashcard Builder</h3>
+                <p>Term – Definition per line</p>
+                <textarea id="fcIn" placeholder="mitochondria – the powerhouse of the cell"></textarea>
+                <div class="row" style="margin-top:8px; gap:8px">
+                  <button class="btn" id="fcBuild">Build</button>
+                  <button class="btn btn-ghost" id="fcClear">Clear</button>
+                </div>
+                <div id="fcOut" class="output" style="margin-top:8px">—</div>
+              </div>
+            </div>
+
+            <!-- 10 Pomodoro -->
+            <div class="tool card" data-tags="timer pomodoro focus">
+              <div class="card-body">
+                <h3>Pomodoro (25/5)</h3>
+                <div class="row">
+                  <button class="btn" id="pomStart">Start</button>
+                  <button class="btn btn-ghost" id="pomStop">Stop</button>
+                  <div id="pomOut" class="output" style="flex:1">25:00</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 11 Stopwatch -->
+            <div class="tool card" data-tags="stopwatch time">
+              <div class="card-body">
+                <h3>Stopwatch</h3>
+                <div class="row">
+                  <button class="btn" id="swStart">Start</button>
+                  <button class="btn btn-ghost" id="swStop">Stop</button>
+                  <button class="btn btn-ghost" id="swReset">Reset</button>
+                  <div id="swOut" class="output" style="flex:1">00:00.0</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 12 Countdown -->
+            <div class="tool card" data-tags="countdown timer">
+              <div class="card-body">
+                <h3>Countdown</h3>
+                <div class="row">
+                  <input type="number" id="cdMin" placeholder="Minutes">
+                  <button class="btn" id="cdStart">Start</button>
+                  <div id="cdOut" class="output" style="flex:1">—</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 13 Random Picker -->
+            <div class="tool card" data-tags="random picker choose name group">
+              <div class="card-body">
+                <h3>Random Name Picker</h3>
+                <textarea id="rpIn" placeholder="One name per line…"></textarea>
+                <div class="row" style="margin-top:8px">
+                  <button class="btn" id="rpPick">Pick</button>
+                  <div id="rpOut" class="output" style="flex:1">—</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 14 GPA Calculator -->
+            <div class="tool card" data-tags="grades gpa average">
+              <div class="card-body">
+                <h3>GPA (Unweighted)</h3>
+                <p>A=4, B=3, C=2, D=1, F=0</p>
+                <input id="gpaIn" placeholder="Enter grades like: A, B+, A-, C" />
+                <div class="row" style="margin-top:8px">
+                  <button class="btn" id="gpaBtn">Calculate</button>
+                  <div id="gpaOut" class="output" style="flex:1">—</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 15 Final Grade Needed -->
+            <div class="tool card" data-tags="grades final exam what do i need">
+              <div class="card-body">
+                <h3>Final Grade Needed</h3>
+                <div class="row">
+                  <input type="number" id="fgCurrent" placeholder="Current %">
+                  <input type="number" id="fgWeight" placeholder="Final weight %">
+                  <input type="number" id="fgTarget" placeholder="Target %">
+                  <button class="btn" id="fgBtn">Compute</button>
+                </div>
+                <div id="fgOut" class="output" style="margin-top:8px">—</div>
+              </div>
+            </div>
+
+            <!-- 16 Citation Builder (MLA quick) -->
+            <div class="tool card" data-tags="mla citation bibliography">
+              <div class="card-body">
+                <h3>Citation Builder (MLA)</h3>
+                <div class="col">
+                  <input id="ctAuthor" placeholder="Author Last, First">
+                  <input id="ctTitle" placeholder="Title of Source">
+                  <input id="ctContainer" placeholder="Title of Container (site/book)">
+                  <input id="ctPublisher" placeholder="Publisher">
+                  <input id="ctDate" placeholder="Publication Date (2024)">
+                  <input id="ctURL" placeholder="URL (optional)">
+                </div>
+                <div class="row" style="margin-top:8px">
+                  <button class="btn" id="ctBtn">Format</button>
+                  <div id="ctOut" class="output" style="flex:1">—</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 17 Notes -->
+            <div class="tool card" data-tags="notes notepad write save">
+              <div class="card-body">
+                <h3>Notes (saved locally)</h3>
+                <textarea id="ntIn" placeholder="Write notes…"></textarea>
+                <div class="row" style="margin-top:8px">
+                  <button class="btn" id="ntSave">Save</button>
+                  <button class="btn btn-ghost" id="ntClear">Clear</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 18 Homework Planner -->
+            <div class="tool card" data-tags="planner homework tasks todo">
+              <div class="card-body">
+                <h3>Homework Planner</h3>
+                <div class="row">
+                  <input id="hpTitle" placeholder="Task (e.g., Math 7.3)"/>
+                  <input id="hpDue" type="date"/>
+                  <button class="btn" id="hpAdd">Add</button>
+                </div>
+                <div id="hpList" class="col" style="margin-top:8px; gap:6px"></div>
+              </div>
+            </div>
+
+            <!-- 19 Area & Perimeter -->
+            <div class="tool card" data-tags="geometry area perimeter rectangle circle">
+              <div class="card-body">
+                <h3>Area & Perimeter</h3>
+                <div class="row">
+                  <select id="apShape">
+                    <option value="rect">Rectangle</option>
+                    <option value="circle">Circle</option>
+                    <option value="tri">Right Triangle</option>
+                  </select>
+                  <div id="apInputs" class="row" style="gap:6px"></div>
+                  <button class="btn" id="apBtn">Compute</button>
+                </div>
+                <div id="apOut" class="output" style="margin-top:8px">—</div>
+              </div>
+            </div>
+
+            <!-- 20 Distance on a Grid -->
+            <div class="tool card" data-tags="coordinate distance grid math">
+              <div class="card-body">
+                <h3>Coordinate Distance</h3>
+                <div class="row">
+                  <input id="dxa" type="number" placeholder="x1">
+                  <input id="dya" type="number" placeholder="y1">
+                  <input id="dxb" type="number" placeholder="x2">
+                  <input id="dyb" type="number" placeholder="y2">
+                  <button class="btn" id="dBtn">Compute</button>
+                </div>
+                <div id="dOut" class="output" style="margin-top:8px">—</div>
+              </div>
+            </div>
+
+            <!-- 21 Mini Dictionary -->
+            <div class="tool card" data-tags="dictionary define vocab words">
+              <div class="card-body">
+                <h3>Mini Dictionary</h3>
+                <p>Offline basic defs</p>
+                <div class="row">
+                  <input id="mdIn" placeholder="word"/>
+                  <button class="btn" id="mdBtn">Define</button>
+                </div>
+                <div id="mdOut" class="output" style="margin-top:8px">—</div>
+              </div>
+            </div>
+
+            <!-- 22 Thesaurus -->
+            <div class="tool card" data-tags="thesaurus synonyms vocab">
+              <div class="card-body">
+                <h3>Mini Thesaurus</h3>
+                <div class="row">
+                  <input id="thIn" placeholder="word"/>
+                  <button class="btn" id="thBtn">Synonyms</button>
+                </div>
+                <div id="thOut" class="output" style="margin-top:8px">—</div>
+              </div>
+            </div>
+
+            <!-- 23 Sentence Starter -->
+            <div class="tool card" data-tags="writing sentence starter transition words">
+              <div class="card-body">
+                <h3>Sentence Starters</h3>
+                <div class="row">
+                  <select id="ssType">
+                    <option value="intro">Introduce</option>
+                    <option value="evidence">Cite Evidence</option>
+                    <option value="explain">Explain</option>
+                    <option value="conclude">Conclude</option>
+                  </select>
+                  <button class="btn" id="ssBtn">Suggest</button>
+                </div>
+                <div id="ssOut" class="output" style="margin-top:8px">—</div>
+              </div>
+            </div>
+
+            <!-- 24 Ruler to Pixels -->
+            <div class="tool card" data-tags="measurement pixels mm cm inches">
+              <div class="card-body">
+                <h3>Ruler ⇄ Pixels</h3>
+                <p>Convert inches/mm ↔ pixels (96 dpi)</p>
+                <div class="row">
+                  <input type="number" id="rpvVal" placeholder="Value">
+                  <select id="rpvFrom">
+                    <option value="in">inches</option>
+                    <option value="mm">mm</option>
+                    <option value="px">pixels</option>
+                  </select>
+                  <select id="rpvTo">
+                    <option value="px">pixels</option>
+                    <option value="in">inches</option>
+                    <option value="mm">mm</option>
+                  </select>
+                  <button class="btn" id="rpvBtn">Convert</button>
+                </div>
+                <div id="rpvOut" class="output" style="margin-top:8px">—</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
+  <!-- Chatbot toggle button -->
+  <button class="btn btn-accent chat-toggle" id="openChat">💬 Chat with Honkers</button>
+
+  <!-- Chatbot panel -->
+  <div class="assistant" id="assistant">
+    <div class="asst-header">
+      <div style="width:34px;height:34px;border-radius:50%;background:#0b1239;border:1px solid #2a356c;display:grid;place-items:center">🪶</div>
+      <div class="title">Honkers McFeathers</div>
+      <div class="tag">AI Helper</div>
+      <button class="btn btn-ghost" style="margin-left:auto" id="closeChat">×</button>
+    </div>
+    <div class="asst-body" id="chatBody">
+      <div class="bubble bot">Honk! I’m Honkers. Ask me school stuff—math, writing tips, definitions—or type <em>check backpack</em>.</div>
+    </div>
+    <div class="asst-input">
+      <input id="chatIn" class="input" placeholder="Type a question… e.g., simplify 18/24"/>
+      <button class="btn" id="sendChat">Send</button>
+    </div>
+  </div>
+
   <footer>
-    © 2025 School Tools Hub. Made for students.
+    Built for middle-schoolers with focus and clarity. No tracking. Your checklist, notes, and homework live only in your browser.
   </footer>
+
+  <script>
+    // ============ Utilities ============
+    const $ = s => document.querySelector(s);
+    const $$ = s => Array.from(document.querySelectorAll(s));
+    const store = (k,v)=>localStorage.setItem(k, JSON.stringify(v));
+    const load = (k, d=null)=>{try{return JSON.parse(localStorage.getItem(k)) ?? d}catch{return d}};
+
+    // ============ Search & Filters ============
+    const TAGS = ["math","writing","reading","timers","grades","planner","vocab","geometry","units","random","other"];
+    const filtersEl = $('#filters');
+    const toolCards = $$('#toolGrid .tool');
+
+    const makeFilterBtn = (name)=>{
+      const b=document.createElement('button');
+      b.textContent=name; b.dataset.tag=name; b.onclick=()=>applyFilter(name);
+      return b;
+    };
+    ['all','math','writing','reading','timers','grades','planner','vocab','geometry','units','random','other'].forEach(t=>filtersEl.appendChild(makeFilterBtn(t)));
+    function applyFilter(tag){
+      $$('#filters button').forEach(b=>b.classList.toggle('active', b.dataset.tag===tag));
+      toolCards.forEach(card=>{
+        const tags = card.dataset.tags || '';
+        const match = tag==='all' || tags.includes(tag);
+        card.style.display = match ? 'flex' : 'none';
+      });
+    }
+    applyFilter('all');
+
+    $('#search').addEventListener('input', e=>{
+      const q=e.target.value.toLowerCase();
+      toolCards.forEach(card=>{
+        const txt = card.textContent.toLowerCase() + ' ' + (card.dataset.tags||'');
+        card.style.display = txt.includes(q)?'flex':'none';
+      });
+    });
+    $('#clearSearch').onclick=()=>{ $('#search').value=''; $('#search').dispatchEvent(new Event('input')); };
+
+    // ============ Checklist ============
+    const chkKeys=['notebook','binder','pencils','homework','charger','water','lunch','pe'];
+    function loadChecklist(){
+      const data = load('hm_checklist', {});
+      $$('.chk').forEach(c=>{ c.checked = !!data[c.dataset.key]; });
+      updateChecklistStatus();
+    }
+    function saveChecklist(){
+      const data={}; $$('.chk').forEach(c=>data[c.dataset.key]=c.checked);
+      store('hm_checklist', data); updateChecklistStatus();
+    }
+    function clearChecklist(){ $$('.chk').forEach(c=>c.checked=false); saveChecklist(); }
+    function updateChecklistStatus(){
+      const data={}; $$('.chk').forEach(c=>data[c.dataset.key]=c.checked);
+      const missing = chkKeys.filter(k=>!data[k]);
+      const el=$('#checklistStatus');
+      el.textContent = missing.length? `Missing: ${missing.join(', ')}` : 'All set!';
+      el.style.color = missing.length? 'var(--warn)' : 'var(--ok)';
+    }
+    $('#saveChecklist').onclick=saveChecklist; $('#clearChecklist').onclick=clearChecklist; $$('.chk').forEach(c=>c.addEventListener('change', updateChecklistStatus));
+    loadChecklist();
+
+    // ============ Calculator ============
+    function safeEval(expr){
+      if(!/^[-+*/()%\.\d\s]+$/.test(expr)) return 'Invalid characters';
+      try{ return Function(`"use strict"; return (${expr})`)(); }catch{ return 'Error'; }
+    }
+    $('#calcBtn').onclick=()=>{ const v=$('#calcIn').value.trim(); const r=safeEval(v); $('#calcOut').textContent = r===undefined? '—' : r; };
+
+    // ============ Unit Converter ============
+    const units={
+      length:{ m:1, cm:0.01, mm:0.001, km:1000, in:0.0254, ft:0.3048, yd:0.9144, mi:1609.34 },
+      mass:{ g:1, kg:1000, mg:0.001, lb:453.592, oz:28.3495 },
+      temp:{}
+    };
+    const tempUnits=['C','F','K'];
+    function populateUC(){
+      const type=$('#ucType').value;
+      const from=$('#ucFrom'), to=$('#ucTo');
+      from.innerHTML=''; to.innerHTML='';
+      if(type==='temp'){ tempUnits.forEach(u=>{ from.add(new Option(u,u)); to.add(new Option(u,u)); }); }
+      else{ Object.keys(units[type]).forEach(u=>{ from.add(new Option(u,u)); to.add(new Option(u,u)); }); }
+    }
+    function convertTemp(v, from, to){
+      let c; if(from==='C') c=v; else if(from==='F') c=(v-32)*5/9; else c=v-273.15; // to C
+      if(to==='C') return c; if(to==='F') return c*9/5+32; return c+273.15;
+    }
+    $('#ucType').onchange=populateUC; populateUC();
+    $('#ucBtn').onclick=()=>{
+      const type=$('#ucType').value; const v=parseFloat($('#ucVal').value); const f=$('#ucFrom').value; const t=$('#ucTo').value;
+      if(Number.isNaN(v)) return $('#ucOut').textContent='Enter a number';
+      let out='';
+      if(type==='temp') out = convertTemp(v,f,t).toFixed(2)+ ' ' + t;
+      else{ const base=v*units[type][f]; out = (base/units[type][t]).toFixed(4)+ ' ' + t; }
+      $('#ucOut').textContent=out;
+    };
+
+    // ============ Fraction Simplifier ============
+    function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ [a,b]=[b,a%b]; } return a||1; }
+    $('#frBtn').onclick=()=>{ const a=parseInt($('#frA').value), b=parseInt($('#frB').value); if(!b){$('#frOut').textContent='Denominator cannot be 0';return} const g=gcd(a,b); $('#frOut').textContent=`${a/g}/${b/g}`; };
+
+    // ============ Percent Converter ============
+    function percentConvert(str){
+      str=str.trim();
+      if(/%$/.test(str)){ const n=parseFloat(str.replace('%','')); return {percent:n+'%', decimal:(n/100).toString(), fraction: toFraction(n/100)}; }
+      if(/\//.test(str)){ const [a,b]=str.split('/').map(Number); const dec=a/b; return {percent:(dec*100).toFixed(2)+'%', decimal: dec.toString(), fraction: `${a}/${b}`}; }
+      const dec=parseFloat(str); if(!isNaN(dec)) return {percent:(dec*100).toFixed(2)+'%', decimal: dec.toString(), fraction: toFraction(dec)};
+      return null;
+    }
+    function toFraction(x){
+      if(!isFinite(x)) return '—';
+      const tol=1e-6; let h1=1, h2=0, k1=0, k2=1, b=x; do{ const a=Math.floor(b); [h1,h2]=[a*h1+h2,h1]; [k1,k2]=[a*k1+k2,k1]; const r=b-a; if(Math.abs(r)<tol) break; b=1/r; }while(true);
+      return `${h1}/${k1}`;
+    }
+    $('#pcBtn').onclick=()=>{ const r=percentConvert($('#pcIn').value); $('#pcOut').textContent = r? `percent: ${r.percent}\ndecimal: ${r.decimal}\nfraction: ${r.fraction}` : 'Could not parse.' };
+
+    // ============ Quadratic & Linear ============
+    $('#qBtn').onclick=()=>{ const a=+$('#qa').value, b=+$('#qb').value, c=+$('#qc').value; const d=b*b-4*a*c; if(a===0){$('#qOut').textContent='a cannot be 0';return} if(d<0){$('#qOut').textContent='No real roots';return} const r1=(-b+Math.sqrt(d))/(2*a), r2=(-b-Math.sqrt(d))/(2*a); $('#qOut').textContent=`x = ${r1.toFixed(4)} , ${r2.toFixed(4)}`; };
+    $('#lBtn').onclick=()=>{ const a=+$('#la').value, b=+$('#lb').value, c=+$('#lc').value; if(a===0){$('#lOut').textContent='a cannot be 0';return} const x=(c-b)/a; $('#lOut').textContent=`x = ${x.toFixed(4)}`; };
+
+    // ============ Word Count & Reading Time ============
+    function countWords(t){ const words=(t.trim().match(/\b\w+\b/g)||[]).length; const chars=t.length; const sentences=(t.match(/[.!?]+/g)||[]).length; return {words, chars, sentences}; }
+    $('#wcBtn').onclick=()=>{ const t=$('#wcIn').value; const {words, chars, sentences}=countWords(t); $('#wcOut').textContent=`Words: ${words} | Characters: ${chars} | Sentences: ${sentences}`; };
+    $('#rtBtn').onclick=()=>{ const t=$('#rtIn').value; const {words}=countWords(t); const mins=Math.max(1, Math.ceil(words/200)); $('#rtOut').textContent=`~${mins} minute(s) at ~200 wpm`; };
+
+    // ============ Flashcards ============
+    $('#fcBuild').onclick=()=>{
+      const lines=$('#fcIn').value.split(/\n+/).map(s=>s.trim()).filter(Boolean);
+      if(!lines.length){ $('#fcOut').textContent='—'; return; }
+      let html='<div class="row" style="flex-wrap:wrap; gap:8px">';
+      lines.forEach((ln,i)=>{
+        const [term,def]=ln.split(/\s*[–-]\s*|\s*:\s*/);
+        html+=`<button class="btn btn-ghost" data-term="${term||('Card '+(i+1))}" data-def="${def||''}" onclick="flipCard(this)">${term||('Card '+(i+1))}</button>`;
+      });
+      html+='</div><div class="small" style="margin-top:8px">Click a card to reveal its definition.</div>';
+      $('#fcOut').innerHTML=html;
+    };
+    $('#fcClear').onclick=()=>{ $('#fcIn').value=''; $('#fcOut').textContent='—'; };
+    window.flipCard=(btn)=>{ const def=btn.dataset.def||'(no definition given)'; alert(`${btn.dataset.term}:\n\n${def}`); };
+
+    // ============ Pomodoro / Stopwatch / Countdown ============
+    let pom=null, sw=null, cd=null; let swStart=0, swElapsed=0, cdEnd=0;
+    function fmt(ms){ const t=Math.max(0,Math.floor(ms/100)); const ds=t%10; const s=Math.floor(t/10)%60; const m=Math.floor(t/600); return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}.${ds}`; }
+    $('#pomStart').onclick=()=>{ const work=25*60, brk=5*60; let t=work; clearInterval(pom); $('#pomOut').textContent='25:00'; pom=setInterval(()=>{ t--; const mm=Math.floor(t/60), ss=t%60; $('#pomOut').textContent=`${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`; if(t<=0){ if(t===0) alert('Break time! 5 minutes.'); clearInterval(pom); } },1000); };
+    $('#pomStop').onclick=()=>clearInterval(pom);
+    $('#swStart').onclick=()=>{ if(sw) return; swStart=Date.now()-swElapsed; sw=setInterval(()=>{ swElapsed=Date.now()-swStart; $('#swOut').textContent=fmt(swElapsed); },100); };
+    $('#swStop').onclick=()=>{ clearInterval(sw); sw=null; };
+    $('#swReset').onclick=()=>{ swElapsed=0; $('#swOut').textContent='00:00.0'; };
+    $('#cdStart').onclick=()=>{ const mins=+$('#cdMin').value||0; clearInterval(cd); if(mins<=0){$('#cdOut').textContent='Enter minutes'; return;} cdEnd=Date.now()+mins*60000; cd=setInterval(()=>{ const left=cdEnd-Date.now(); if(left<=0){ $('#cdOut').textContent='00:00'; clearInterval(cd); alert('Countdown finished!'); return;} const m=Math.floor(left/60000), s=Math.floor((left%60000)/1000); $('#cdOut').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; },200);
+    };
+
+    // ============ GPA & Final Grade Needed ============
+    const GPAMap={A:4, 'A-':3.7, 'B+':3.3, B:3, 'B-':2.7, 'C+':2.3, C:2, 'C-':1.7, D:1, F:0};
+    $('#gpaBtn').onclick=()=>{
+      const parts=$('#gpaIn').value.split(/[,\s]+/).map(s=>s.trim().toUpperCase()).filter(Boolean);
+      if(!parts.length){ $('#gpaOut').textContent='—'; return; }
+      const pts=parts.map(g=>GPAMap[g]).filter(v=>v!==undefined); if(!pts.length){ $('#gpaOut').textContent='Use letters like A, B+, C-'; return; }
+      const avg=(pts.reduce((a,b)=>a+b,0)/pts.length).toFixed(2); $('#gpaOut').textContent=`GPA: ${avg}`;
+    };
+    $('#fgBtn').onclick=()=>{
+      const cur=+$('#fgCurrent').value, w=+$('#fgWeight').value/100, target=+$('#fgTarget').value;
+      if(!w){ $('#fgOut').textContent='Weight must be > 0'; return; }
+      const need = ((target - cur*(1-w))/w).toFixed(2);
+      $('#fgOut').textContent = isFinite(need)? `You need ${need}% on the final` : 'Check inputs';
+    };
+
+    // ============ Citation (MLA) ============
+    $('#ctBtn').onclick=()=>{
+      const a=$('#ctAuthor').value, t=$('#ctTitle').value, c=$('#ctContainer').value, p=$('#ctPublisher').value, d=$('#ctDate').value, u=$('#ctURL').value;
+      const pieces=[]; if(a) pieces.push(a+'.'); if(t) pieces.push(`"${t}."`); if(c) pieces.push(`<em>${c}</em>,`); if(p) pieces.push(p+','); if(d) pieces.push(d+','); if(u) pieces.push(u);
+      $('#ctOut').innerHTML= pieces.join(' ').replace(/\s+,/g, ',');
+    };
+
+    // ============ Notes & Planner ============
+    $('#ntIn').value = load('hm_notes','');
+    $('#ntSave').onclick=()=>{ store('hm_notes', $('#ntIn').value); };
+    $('#ntClear').onclick=()=>{ $('#ntIn').value=''; store('hm_notes',''); };
+
+    const tasks= load('hm_tasks', []);
+    function renderTasks(){
+      const box=$('#hpList'); box.innerHTML='';
+      if(!tasks.length){ box.innerHTML='<div class="small">No homework yet.</div>'; return; }
+      tasks.forEach((t,i)=>{
+        const row=document.createElement('div'); row.className='row'; row.style.gap='8px'; row.style.alignItems='center';
+        const chk=document.createElement('input'); chk.type='checkbox'; chk.checked=t.done; chk.onchange=()=>{ t.done=chk.checked; store('hm_tasks', tasks); };
+        const lbl=document.createElement('div'); lbl.textContent = `${t.title} – due ${t.due||'n/a'}`; lbl.style.flex='1';
+        const del=document.createElement('button'); del.className='btn btn-ghost'; del.textContent='Delete'; del.onclick=()=>{ tasks.splice(i,1); store('hm_tasks', tasks); renderTasks(); };
+        row.append(chk,lbl,del); box.append(row);
+      })
+    }
+    renderTasks();
+    $('#hpAdd').onclick=()=>{ const title=$('#hpTitle').value.trim(); const due=$('#hpDue').value; if(!title) return; tasks.push({title, due, done:false}); store('hm_tasks', tasks); $('#hpTitle').value=''; renderTasks(); };
+
+    // ============ Geometry & Distance ============
+    function setApInputs(){
+      const s=$('#apShape').value; const wrap=$('#apInputs'); wrap.innerHTML='';
+      if(s==='rect'){ wrap.innerHTML='<input id="apA" type="number" placeholder="width"><input id="apB" type="number" placeholder="height">'; }
+      if(s==='circle'){ wrap.innerHTML='<input id="apR" type="number" placeholder="radius">'; }
+      if(s==='tri'){ wrap.innerHTML='<input id="apBase" type="number" placeholder="base"><input id="apHeight" type="number" placeholder="height">'; }
+    }
+    setApInputs(); $('#apShape').onchange=setApInputs;
+    $('#apBtn').onclick=()=>{
+      const s=$('#apShape').value; let out='';
+      if(s==='rect'){ const w=+$('#apA').value,h=+$('#apB').value; out=`Area=${(w*h).toFixed(2)}, Perimeter=${(2*(w+h)).toFixed(2)}`; }
+      if(s==='circle'){ const r=+$('#apR').value; out=`Area=${(Math.PI*r*r).toFixed(2)}, Circumference=${(2*Math.PI*r).toFixed(2)}`; }
+      if(s==='tri'){ const b=+$('#apBase').value, h=+$('#apHeight').value; out=`Area=${(0.5*b*h).toFixed(2)}`; }
+      $('#apOut').textContent=out||'—';
+    };
+    $('#dBtn').onclick=()=>{ const x1=+$('#dxa').value,y1=+$('#dya').value,x2=+$('#dxb').value,y2=+$('#dyb').value; const d=Math.hypot(x2-x1,y2-y1); $('#dOut').textContent=`Distance = ${d.toFixed(4)}`; };
+
+    // ============ Dictionary & Thesaurus ============
+    const DICT={
+      hypothesis:'An idea that can be tested by experiments.',
+      variable:'Something that can change and affect an experiment or equation.',
+      integer:'A whole number (…-2, -1, 0, 1, 2 …).',
+      fraction:'A number that shows part of a whole, written a/b.',
+      theme:'The main idea or message of a story.',
+      summarize:'To briefly tell the main points.',
+      photosynthesis:'How plants make food using sunlight, water, and carbon dioxide.',
+      mitosis:'Cell division that makes two identical cells.',
+      atom:'The smallest unit of matter that keeps its properties.'
+    };
+    const THES={ good:['great','excellent','solid','strong','reliable'], bad:['poor','weak','unfortunate','lacking','rough'], big:['large','huge','massive','considerable'], small:['tiny','little','mini','compact'], important:['key','crucial','vital','essential'] };
+    $('#mdBtn').onclick=()=>{ const w=$('#mdIn').value.trim().toLowerCase(); $('#mdOut').textContent = DICT[w] || 'Not in the mini dictionary.' };
+    $('#thBtn').onclick=()=>{ const w=$('#thIn').value.trim().toLowerCase(); const syn=THES[w]; $('#thOut').textContent = syn? syn.join(', ') : 'No synonyms stored.' };
+
+    // ============ Sentence Starters ============
+    const STARTERS={
+      intro:['To begin,', 'In this paragraph,', 'First,'],
+      evidence:['According to the text,', 'For example,', 'The author states,'],
+      explain:['This shows that', 'This means', 'As a result,'],
+      conclude:['In conclusion,', 'To sum up,', 'Overall,']
+    };
+    $('#ssBtn').onclick=()=>{ const t=$('#ssType').value; const arr=STARTERS[t]||[]; $('#ssOut').textContent = arr.length? arr[Math.floor(Math.random()*arr.length)] : '—'; };
+
+    // ============ Ruler ⇄ Pixels ============
+    $('#rpvBtn').onclick=()=>{
+      const v=+$('#rpvVal').value, from=$('#rpvFrom').value, to=$('#rpvTo').value; if(!v){$('#rpvOut').textContent='Enter a value'; return}
+      const dpi=96; let px;
+      if(from==='px') px=v; if(from==='in') px=v*dpi; if(from==='mm') px=v*(dpi/25.4);
+      let out;
+      if(to==='px') out=px; if(to==='in') out=px/dpi; if(to==='mm') out=px*(25.4/dpi);
+      $('#rpvOut').textContent = out.toFixed(2) + ' ' + to;
+    };
+
+    // ============ Chatbot (Honkers) ============
+    const chat = {
+      send(msg, who='user'){ const b=document.createElement('div'); b.className=`bubble ${who}`; b.textContent=msg; $('#chatBody').appendChild(b); $('#chatBody').scrollTop = $('#chatBody').scrollHeight; },
+      reply(text){ chat.send(text,'bot'); },
+    };
+
+    function chatbotResponse(q){
+      const s=q.trim().toLowerCase();
+      // 1) Checklist check
+      if(/check (bag|backpack|checklist)|missing|packed/.test(s)){
+        const data=load('hm_checklist', {}); const miss = chkKeys.filter(k=>!data[k]);
+        return miss.length? `You’re missing: ${miss.join(', ')}. Want me to add them to your homework planner as a reminder?` : 'You have everything. High five!';
+      }
+      // 2) Fraction simplify: "simplify a/b"
+      const simp = s.match(/simplify\s+(\d+)\s*\/\s*(\d+)/); if(simp){ const a=+simp[1], b=+simp[2]; const g=gcd(a,b); return `${a}/${b} → ${a/g}/${b/g}`; }
+      // 3) Percent of: "what is 30% of 120"
+      const perc = s.match(/(\d+(?:\.\d+)?)%\s+of\s+(\d+(?:\.\d+)?)/); if(perc){ const p=+perc[1], n=+perc[2]; return `${p}% of ${n} = ${(p/100*n).toFixed(2)}`; }
+      // 4) Define word
+      const def = s.match(/define\s+(\w+)/); if(def){ const w=def[1].toLowerCase(); return DICT[w] ? `${w}: ${DICT[w]}` : `I don’t have ${w} in my mini dictionary, try the Dictionary tool.`; }
+      // 5) Quadratic: "solve x^2+..." (basic a,b,c parser)
+      const quad = s.match(/solve\s*(?:ax\^2)?\s*([-+]?\d*\.?\d*)x\^2\s*([+-]\s*\d*\.?\d*)x\s*([+-]\s*\d*\.?\d*)\s*=\s*0/);
+      if(quad){ const a=parseFloat(quad[1].replace(/\s+/g,''))||1, b=parseFloat(quad[2].replace(/\s+/g,'')), c=parseFloat(quad[3].replace(/\s+/g,'')); const d=b*b-4*a*c; if(d<0) return 'No real roots'; const r1=(-b+Math.sqrt(d))/(2*a), r2=(-b-Math.sqrt(d))/(2*a); return `x = ${r1.toFixed(4)}, ${r2.toFixed(4)}`; }
+      // 6) Evaluate simple arithmetic
+      if(/^[0-9+\-*/().\s]+$/.test(s)){ const r=safeEval(s); return `= ${r}`; }
+      // 7) General hints
+      if(/essay|paragraph/.test(s)) return 'Tip: Use “Introduce → Evidence → Explain → Conclude.” Try the Sentence Starters tool below!';
+      if(/study|memor(y|ise|ize)|remember/.test(s)) return 'Try building quick flashcards: one line per term – definition. Quiz yourself 3× today, 1× tomorrow.';
+      return 'I can help with math (try “simplify 18/24”), definitions (“define hypothesis”), backpack checks (“check backpack”), or timers. What do you need?';
+    }
+
+    $('#openChat').onclick=()=>{ $('#assistant').classList.add('open'); };
+    $('#closeChat').onclick=()=>{ $('#assistant').classList.remove('open'); };
+    $('#sendChat').onclick=()=>{
+      const v=$('#chatIn').value.trim(); if(!v) return; chat.send(v,'user'); const r=chatbotResponse(v); chat.reply(r); $('#chatIn').value='';
+    };
+    $('#chatIn').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); $('#sendChat').click(); }});
+
+    // If Honkers offers to add reminders
+    $('#chatBody').addEventListener('click', (e)=>{
+      if(e.target.matches('.bubble.bot') && e.target.textContent.includes('add them to your homework planner')){
+        const data=load('hm_checklist', {}); const miss=chkKeys.filter(k=>!data[k]);
+        miss.forEach(m=>tasks.push({title:`Pack ${m}`, due:new Date().toISOString().slice(0,10), done:false}));
+        store('hm_tasks', tasks); renderTasks();
+        chat.reply('Added reminders to your Homework Planner.');
+      }
+    });
+  </script>
 </body>
 </html>
