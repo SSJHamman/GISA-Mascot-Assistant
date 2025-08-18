@@ -1,4 +1,4 @@
-const backendURL = "https://your-project-name.vercel.app/api/chat";
+const backendURL = "https://https://honkers-backend.vercel.app/chat";
 
 async function sendMessage(message) {
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
