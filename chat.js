@@ -1,35 +1,50 @@
-const messagesEl = document.getElementById("messages");
-const inputEl = document.getElementById("userInput");
+const apiKey = "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"; // <--- put your key here
 
-async function sendMessage() {
-  const text = inputEl.value.trim();
-  if (!text) return;
+async function sendMessage(message) {
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: "gpt-4o-mini", // cheaper + fast
+      messages: [
+        { role: "system", content: "You are Honkers McFeathers, a silly but helpful AI assistant for 7th graders. You help with schoolwork in a fun but clear way." },
+        { role: "user", content: message }
+      ],
+      max_tokens: 200
+    })
+  });
 
-  addMessage(text, "user");
-  inputEl.value = "";
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
 
-  const thinkingMsg = addMessage("...", "bot");
+document.addEventListener("DOMContentLoaded", () => {
+  const chatBox = document.getElementById("chat-box");
+  const input = document.getElementById("chat-input");
+  const sendBtn = document.getElementById("send-btn");
 
-  try {
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: text })
-    });
-
-    const data = await response.json();
-    thinkingMsg.textContent = data.reply || "Sorry, I didn’t get that.";
-  } catch (err) {
-    thinkingMsg.textContent = "Error talking to AI.";
-    console.error(err);
+  async function addMessage(sender, text) {
+    const msg = document.createElement("div");
+    msg.classList.add("message", sender);
+    msg.innerText = text;
+    chatBox.appendChild(msg);
+    chatBox.scrollTop = chatBox.scrollHeight;
   }
-}
 
-function addMessage(text, sender) {
-  const msg = document.createElement("div");
-  msg.className = "message " + sender;
-  msg.textContent = text;
-  messagesEl.appendChild(msg);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
-  return msg;
-}
+  sendBtn.addEventListener("click", async () => {
+    const userMessage = input.value.trim();
+    if (!userMessage) return;
+
+    addMessage("user", "You: " + userMessage);
+    input.value = "";
+
+    addMessage("honkers", "Honkers is thinking...");
+
+    const reply = await sendMessage(userMessage);
+
+    chatBox.lastChild.innerText = "Honkers: " + reply;
+  });
+});
