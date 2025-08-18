@@ -2,41 +2,86 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Honkers McFeathers – School Tools</title>
+  <title>Honkers McFeathers - School Helper</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f5f7fa; }
-    header { background: #3a6ea5; color: white; padding: 1em; text-align: center; }
-    .chatbox {
-      position: fixed; bottom: 20px; right: 20px; width: 320px;
-      background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      display: flex; flex-direction: column; overflow: hidden;
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    .messages { flex: 1; padding: 10px; overflow-y: auto; max-height: 300px; }
-    .message { margin: 6px 0; padding: 8px; border-radius: 8px; }
-    .user { background: #d0e6ff; align-self: flex-end; }
-    .bot { background: #eee; align-self: flex-start; }
-    .input-area { display: flex; border-top: 1px solid #ccc; }
-    .input-area input {
-      flex: 1; border: none; padding: 10px; font-size: 14px;
+    header {
+      background: #4b6cb7;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      width: 100%;
     }
-    .input-area button {
-      background: #3a6ea5; color: white; border: none; padding: 10px 16px;
-      cursor: pointer; font-size: 14px;
+    #chat-container {
+      margin-top: 20px;
+      width: 90%;
+      max-width: 600px;
+      border: 2px solid #4b6cb7;
+      border-radius: 12px;
+      background: white;
+      padding: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    #chat-box {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: #f0f4ff;
+    }
+    .message {
+      margin: 8px 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      max-width: 75%;
+    }
+    .user {
+      background: #d1e7dd;
+      align-self: flex-end;
+    }
+    .honkers {
+      background: #e7e5ff;
+      align-self: flex-start;
+    }
+    #chat-input {
+      width: 75%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    #send-btn {
+      padding: 10px 15px;
+      border: none;
+      background: #4b6cb7;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #send-btn:hover {
+      background: #3a5296;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>📚 Honkers McFeathers – Your School Helper</h1>
+    <h1>🎓 Honkers McFeathers - Your School AI Buddy</h1>
+    <p>Ask me anything about homework, studying, or school tools!</p>
   </header>
 
-  <!-- Chatbox -->
-  <div class="chatbox">
-    <div class="messages" id="messages"></div>
-    <div class="input-area">
-      <input id="userInput" type="text" placeholder="Ask Honkers anything..." />
-      <button onclick="sendMessage()">Send</button>
-    </div>
+  <div id="chat-container">
+    <div id="chat-box"></div>
+    <input id="chat-input" type="text" placeholder="Ask Honkers something...">
+    <button id="send-btn">Send</button>
   </div>
 
   <script src="chat.js"></script>
